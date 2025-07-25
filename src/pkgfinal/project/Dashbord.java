@@ -11,6 +11,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Marc Louis A. Lactao
  */
 public class Dashbord extends javax.swing.JFrame {
+    private String name;
+    private String email;
+    private String password;
+    
 public void loadProductsToTable() {
     DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
     model.setRowCount(0); // Clear existing rows
@@ -28,9 +32,17 @@ public void loadProductsToTable() {
     /**
      * Creates new form Dashbord
      */
-    public Dashbord() {
+    public Dashbord(String name, String email, String password) {
         initComponents();
         loadProductsToTable();
+         this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+    
+    
+    public Dashbord() {
+        initComponents();
     }
 
     /**
@@ -241,7 +253,10 @@ public void loadProductsToTable() {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        user userFrame = new user(name, email, password);
+        userFrame.setVisible(true);
+        this.dispose(); // 
+     
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

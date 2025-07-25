@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pkgfinal.project;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,11 +13,25 @@ public class user extends javax.swing.JFrame {
 
     /**
      * Creates new form user
+     * @param name
+     * @param email
+     * @param password
      */
+    public user(String name, String email, String password) {
+        initComponents();
+        
+        
+        DefaultTableModel model = (DefaultTableModel) usertab.getModel();
+        model.addRow(new Object[]{name, email, password});
+    }
+
     public user() {
         initComponents();
     }
 
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
