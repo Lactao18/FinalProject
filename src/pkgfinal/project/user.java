@@ -46,7 +46,7 @@ public class user extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         usertab = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         userlog.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -63,7 +63,15 @@ public class user extends javax.swing.JFrame {
             new String [] {
                 "NAME", "EMAIL", "PASSWORD"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(usertab);
 
         javax.swing.GroupLayout userlogLayout = new javax.swing.GroupLayout(userlog);
@@ -101,6 +109,7 @@ public class user extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

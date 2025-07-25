@@ -22,6 +22,7 @@ public class Products {
      *
      * @return
      */
+    
  
     public String getName() { return name; }
     public double getPrice() { return price; }
