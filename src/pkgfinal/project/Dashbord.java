@@ -10,14 +10,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Marc Louis A. Lactao
  */
-public class Dashbord extends javax.swing.JFrame {
+public final class Dashbord extends javax.swing.JFrame {
+    
     private String name;
     private String email;
     private String password;
     
 public void loadProductsToTable() {
     DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
-    model.setRowCount(0); // Clear existing rows
+    model.setRowCount(0); 
 
     for (Products p : ProductStore.productList) {
         model.addRow(new Object[] {
@@ -25,16 +26,19 @@ public void loadProductsToTable() {
             p.getName(),
             p.getPrice(),
             p.getQuantity(),
-            p.getStatus()
-        });
+
+                            });
     }
 }
     /**
      * Creates new form Dashbord
+     * @param name
+     * @param email
+     * @param password
      */
     public Dashbord(String name, String email, String password) {
         initComponents();
-        loadProductsToTable();
+      
          this.name = name;
         this.email = email;
         this.password = password;
@@ -43,6 +47,7 @@ public void loadProductsToTable() {
     
     public Dashbord() {
         initComponents();
+          loadProductsToTable();
     }
 
     /**
@@ -79,7 +84,15 @@ public void loadProductsToTable() {
             new String [] {
                 "Code", "Product Name", "Price", "Quantity", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(prodtable);
         if (prodtable.getColumnModel().getColumnCount() > 0) {
             prodtable.getColumnModel().getColumn(0).setResizable(false);
@@ -92,6 +105,11 @@ public void loadProductsToTable() {
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
         jButton1.setText("Exit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jButton3.setText("USER");
@@ -276,6 +294,12 @@ public void loadProductsToTable() {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            MainFrame main = new MainFrame();
+            main.setVisible(true);
+            this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
