@@ -42,11 +42,16 @@ public class Product extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         stats = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CategoryComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         botadd1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -106,10 +111,10 @@ public class Product extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("STATUS");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        CategoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Food" }));
+        CategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                CategoryComboBoxActionPerformed(evt);
             }
         });
 
@@ -140,7 +145,7 @@ public class Product extends javax.swing.JFrame {
                     .addComponent(tfcode))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CategoryComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(23, 23, 23))
         );
@@ -176,7 +181,7 @@ public class Product extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19)))
                 .addComponent(stats, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
@@ -256,7 +261,7 @@ public class Product extends javax.swing.JFrame {
 
     private void botaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaddActionPerformed
 
-       {                                     
+                                            
     try {
         // Get values from input fields
         String code = tfcode.getText();         // Example: txtCode is your JTextField for code
@@ -264,13 +269,8 @@ public class Product extends javax.swing.JFrame {
         double price = Double.parseDouble(tfprice.getText());
         int quantity = Integer.parseInt(tfquan.getText());
         String stat = stats.getText();
-        // Get selected categories
-        String category = "";
-
-        // Create a new Product object
-        Products prod = new Products(code, name, price, quantity, stat,  category.trim());
-
-         ProductStore.productList.add(prod);
+        String category = (String) CategoryComboBox.getSelectedItem();
+        ProductStore.productList.add(new Products(code, name, price, quantity, stat, category));
 
            
         // Show confirmation
@@ -288,16 +288,28 @@ public class Product extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Please enter valid data.");
     }
         
-       }    
+           
     }//GEN-LAST:event_botaddActionPerformed
 
     private void statsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_statsActionPerformed
+    
+    private void loadCategoriesIntoComboBox() {
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    for (String category : ManageCategory.categoryList) {
+        CategoryComboBox.addItem(category);
+        }
+    }
+    
+    
+    private void CategoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryComboBoxActionPerformed
         
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_CategoryComboBoxActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+            loadCategoriesIntoComboBox();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -335,9 +347,9 @@ public class Product extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> CategoryComboBox;
     private javax.swing.JButton botadd;
     private javax.swing.JButton botadd1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -354,19 +366,5 @@ public class Product extends javax.swing.JFrame {
     private javax.swing.JTextField tfquan;
     // End of variables declaration//GEN-END:variables
 
-    Object getcode() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    Object getPrice() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    Object getQuantity() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    Object getCategory() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

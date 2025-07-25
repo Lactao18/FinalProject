@@ -4,6 +4,7 @@
  */
 package pkgfinal.project;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,13 +13,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Marc Louis A. Lactao
  */
 public class ManageCategory extends javax.swing.JFrame {
-    
+    public static ArrayList<String> categoryList = new ArrayList();
             int id = 1;
-    /**
-     * Creates new form ManageCategory
-     */
+            
     public ManageCategory() {
         initComponents();
+        
+        CategoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        int selectedRow = CategoryTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            
+            String categoryName = CategoryTable.getValueAt(selectedRow, 1).toString();
+            CategoryNameTF.setText(categoryName);
+        }
+    }
+});
+
         setLocationRelativeTo(null);
     }
 
@@ -38,11 +51,16 @@ public class ManageCategory extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         CategoryNameTF = new javax.swing.JTextField();
         SaveButton = new javax.swing.JButton();
-        UpdateButtom = new javax.swing.JButton();
+        UpdateButton = new javax.swing.JButton();
         ResetButton = new javax.swing.JButton();
-        CloseButton = new javax.swing.JButton();
+        BackToDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -69,6 +87,11 @@ public class ManageCategory extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        CategoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CategoryTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(CategoryTable);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 69, 309, 353));
@@ -91,14 +114,24 @@ public class ManageCategory extends javax.swing.JFrame {
         });
         jPanel1.add(SaveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, -1, -1));
 
-        UpdateButtom.setText("Update");
-        jPanel1.add(UpdateButtom, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
+        UpdateButton.setText("Update");
+        UpdateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(UpdateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
 
         ResetButton.setText("Reset");
-        jPanel1.add(ResetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 130, -1, -1));
+        jPanel1.add(ResetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, -1, -1));
 
-        CloseButton.setText("Back To Dashboard");
-        jPanel1.add(CloseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 390, -1, -1));
+        BackToDashboard.setText("Back To Dashboard");
+        BackToDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackToDashboardActionPerformed(evt);
+            }
+        });
+        jPanel1.add(BackToDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 390, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,7 +164,7 @@ public class ManageCategory extends javax.swing.JFrame {
             // Check for duplicates
         boolean isDuplicate = false;
         for (int i = 0; i < model.getRowCount(); i++) {
-            String existingCategory = model.getValueAt(i, 1).toString(); // Assuming category name is in column 1
+            String existingCategory = model.getValueAt(i, 1).toString();
                 if (existingCategory.equalsIgnoreCase(categoryName)) {
                     isDuplicate = true;
                     break;
@@ -142,10 +175,82 @@ public class ManageCategory extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Category already exists!", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
             } else {
                 model.addRow(new Object[] {id, categoryName});
+                
+                categoryList.add(categoryName);
+                
                 CategoryNameTF.setText("");
                 id++;
             }
     }//GEN-LAST:event_SaveButtonActionPerformed
+
+    private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
+                                                  
+        DefaultTableModel model = (DefaultTableModel) CategoryTable.getModel();
+        int selectedRow = CategoryTable.getSelectedRow();
+        String updatedCategoryName = CategoryNameTF.getText().trim();
+
+        // No row selected
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Empty name check
+        if (updatedCategoryName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Category name cannot be empty.", "Empty Field", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Duplicate check (excluding selected row)
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (i == selectedRow) continue; // skip the row being updated
+            String existingCategory = model.getValueAt(i, 1).toString();
+            if (existingCategory.equalsIgnoreCase(updatedCategoryName)) {
+                JOptionPane.showMessageDialog(this, "Category name already exists.", "Duplicate Name", JOptionPane.WARNING_MESSAGE);
+                return;
+
+        }
+
+        // Update the category name
+        model.setValueAt(updatedCategoryName, selectedRow, 1); // column 1 = category name
+        JOptionPane.showMessageDialog(this, "Category updated successfully!");
+
+        // Reset field and selection
+        CategoryNameTF.setText("");
+        }
+
+        // Update the table
+        model.setValueAt(updatedCategoryName, selectedRow, 1);
+
+        // Update categoryList as well
+        categoryList.set(selectedRow, updatedCategoryName);
+
+    }//GEN-LAST:event_UpdateButtonActionPerformed
+
+    private void CategoryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CategoryTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CategoryTableMouseClicked
+
+    private void BackToDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToDashboardActionPerformed
+        Dashbord dash = new Dashbord();
+        dash.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BackToDashboardActionPerformed
+
+    private void loadCategoryListToTable() {
+    DefaultTableModel model = (DefaultTableModel) CategoryTable.getModel();
+    model.setRowCount(0); // Clear existing rows to avoid duplicates
+
+    id = 1; // Reset ID so it matches correctly
+    for (String name : categoryList) {
+        model.addRow(new Object[]{id, name});
+        id++;
+    }
+}
+    
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        loadCategoryListToTable();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -183,12 +288,12 @@ public class ManageCategory extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackToDashboard;
     private javax.swing.JTextField CategoryNameTF;
     private javax.swing.JTable CategoryTable;
-    private javax.swing.JButton CloseButton;
     private javax.swing.JButton ResetButton;
     private javax.swing.JButton SaveButton;
-    private javax.swing.JButton UpdateButtom;
+    private javax.swing.JButton UpdateButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

@@ -10,5 +10,5 @@ public class ProductStore {
     /**
      *
      */
-    public static List<Products> productList = new ArrayList<>();
+    public static ArrayList<Products> productList = new ArrayList<>();
 }

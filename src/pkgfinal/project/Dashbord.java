@@ -17,7 +17,7 @@ public class Dashbord extends javax.swing.JFrame {
     
 public void loadProductsToTable() {
     DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
-    model.setRowCount(0); // Clear existing rows
+    model.setRowCount(0);
 
     for (Products p : ProductStore.productList) {
         model.addRow(new Object[] {
@@ -25,17 +25,15 @@ public void loadProductsToTable() {
             p.getName(),
             p.getPrice(),
             p.getQuantity(),
-            p.getStatus()
+            p.getStatus(),
+            p.getCategory()
         });
     }
 }
-    /**
-     * Creates new form Dashbord
-     */
+
     public Dashbord(String name, String email, String password) {
         initComponents();
-        loadProductsToTable();
-         this.name = name;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -43,6 +41,7 @@ public void loadProductsToTable() {
     
     public Dashbord() {
         initComponents();
+        loadProductsToTable();
     }
 
     /**
@@ -78,17 +77,18 @@ public void loadProductsToTable() {
 
             },
             new String [] {
-                "Code", "Product Name", "Price", "Quantity", "Status"
+                "Code", "Product Name", "Price", "Quantity", "Status", "Category"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(prodtable);
-        if (prodtable.getColumnModel().getColumnCount() > 0) {
-            prodtable.getColumnModel().getColumn(0).setResizable(false);
-            prodtable.getColumnModel().getColumn(1).setResizable(false);
-            prodtable.getColumnModel().getColumn(2).setResizable(false);
-            prodtable.getColumnModel().getColumn(3).setResizable(false);
-            prodtable.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -283,6 +283,7 @@ public void loadProductsToTable() {
 
     private void CategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryButtonActionPerformed
         new ManageCategory().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_CategoryButtonActionPerformed
 
     /**
