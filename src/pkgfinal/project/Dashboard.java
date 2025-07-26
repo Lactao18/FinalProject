@@ -37,7 +37,7 @@ public void loadProductsToTable() {
     }
 }
 
-    public Dashboard(String name, String email) {
+    public Dashboard(String name, String email, String password1) {
         initComponents();
         this.name = name;
         this.email = email;

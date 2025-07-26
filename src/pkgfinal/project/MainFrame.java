@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import pkgfinal.project.Dashboard;
-import pkgfinal.project.Dashboard;
 import static pkgfinal.project.UserFileManager.hashPassword;
 import pkgfinal.project.signup;
 
@@ -346,7 +345,7 @@ public class MainFrame extends javax.swing.JFrame {
         pass.setText("");
 
         // Switch to Dashboard frame
-        Dashboard dash = new Dashboard(name, email); // Pass what you need
+        Dashboard dash = new Dashboard(name, email,password); // Pass what you need
         dash.setVisible(true);
         dispose();
 
