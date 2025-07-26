@@ -100,6 +100,11 @@ public void loadProductsToTable() {
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
         ExitButton.setText("Exit");
+        ExitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitButtonActionPerformed(evt);
+            }
+        });
 
         UserButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         UserButton.setText("USER");
@@ -329,6 +334,10 @@ public void loadProductsToTable() {
         this.dispose();
         
     }//GEN-LAST:event_UpdateProductButttonActionPerformed
+
+    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
+        
+    }//GEN-LAST:event_ExitButtonActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,18 +6,13 @@ package pkgfinal.project;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import pkgfinal.project.Dashboard;
-import pkgfinal.project.Dashboard;
-import pkgfinal.project.signup;
+
 
 /**
  *
  * @author Marc Louis A. Lactao
  */
-public class MainFrame extends javax.swing.JFrame {
-
-    static Object users;
-
+public class LogInFrame extends javax.swing.JFrame {
     /**
      *
      */
@@ -25,7 +20,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public LogInFrame() {
         initComponents();
     }
 
@@ -309,7 +304,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     boolean found = false;
 
-    for (String[] user : MainFrame.user) { // Make sure 'users' is accessible
+    for (String[] user : LogInFrame.user) { // Make sure 'users' is accessible
         if (user[1].equals(email) && user[2].equals(password)) {
             found = true;
             break;
@@ -333,9 +328,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_login1ActionPerformed
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            signup sign = new signup();
-            sign.setVisible(true);
-            dispose();
+            new SignUpFrame().setVisible(true);
+            this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -356,20 +350,20 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                new LogInFrame().setVisible(true);
             }
         });
     }

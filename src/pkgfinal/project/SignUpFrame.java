@@ -5,18 +5,17 @@
 package pkgfinal.project;
 
 import javax.swing.JOptionPane;
-import pkgfinal.project.MainFrame;
 
 /**
  *
  * @author Rainier
  */
-public class signup extends javax.swing.JFrame {
+public class SignUpFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form signup
      */
-    public signup() {
+    public SignUpFrame() {
         initComponents();
     }
 
@@ -155,29 +154,24 @@ public class signup extends javax.swing.JFrame {
     }//GEN-LAST:event_accnameActionPerformed
 
     private void accbot1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accbot1ActionPerformed
-     String name = accname.getText().trim();
-String email = accemail.getText().trim();
-String password = new String(accpass.getPassword()).trim();
+        String name = accname.getText().trim();
+        String email = accemail.getText().trim();   
+        String password = new String(accpass.getPassword()).trim();
 
-if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
-} else {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
     
-    String[] newUser = { name, email, password };
-    MainFrame.user.add(newUser); 
+            String[] newUser = { name, email, password };
+            LogInFrame.user.add(newUser); 
 
-    
-    accname.setText("");
-    accemail.setText("");
-    accpass.setText("");
+            accname.setText("");
+            accemail.setText("");
+            accpass.setText("");
 
-    
-    MainFrame main = new MainFrame();
-    main.setVisible(true);
-    dispose();
-}     
-        
-      
+        new LogInFrame().setVisible(true);
+        this.dispose();
+        }     
     }//GEN-LAST:event_accbot1ActionPerformed
 
     /**
@@ -197,20 +191,20 @@ if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new signup().setVisible(true);
+                new SignUpFrame().setVisible(true);
             }
         });
     }

@@ -23,7 +23,8 @@ public class ProductFrame extends javax.swing.JFrame {
         initComponents();
     
         if (product != null && isUpdateMode) {
-
+            this.productToEdit=product;
+            this.editIndex=Dashboard.productList.indexOf(product);
             tfcode.setText(product.getCode());
             tfprodname.setText(product.getName());
             tfprice.setText(String.valueOf(product.getPrice()));
