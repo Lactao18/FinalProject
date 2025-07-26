@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Marc Louis A. Lactao
  */
 public class ManageCategory extends javax.swing.JFrame {
-    public static ArrayList<String> categoryList = new ArrayList();
+    public static ArrayList<String> categoryList = new ArrayList<>();
             int id = 1;
             
     public ManageCategory() {

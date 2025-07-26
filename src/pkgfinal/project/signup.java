@@ -155,27 +155,36 @@ public class signup extends javax.swing.JFrame {
     }//GEN-LAST:event_accnameActionPerformed
 
     private void accbot1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accbot1ActionPerformed
-     String name = accname.getText().trim();
-String email = accemail.getText().trim();
-String password = new String(accpass.getPassword()).trim();
+       String name = accname.getText().trim();
+    String email = accemail.getText().trim();
+    String password = new String(accpass.getPassword()).trim();
 
-if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
-} else {
-    
-    String[] newUser = { name, email, password };
-    MainFrame.user.add(newUser); 
+    // Step 1: Validate input
+    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-    
+    // Step 2: Check for duplicate email (optional but helpful)
+    if (UserFileManager.isValidLogin(name, email, password)) {
+        JOptionPane.showMessageDialog(this, "This account already exists.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Step 3: Save user to file
+    UserFileManager.saveUser(name, email, password);
+
+    // Step 4: Clear fields
     accname.setText("");
     accemail.setText("");
     accpass.setText("");
 
-    
+    JOptionPane.showMessageDialog(this, "Account created successfully!");
+
+    // Step 5: Navigate back to login
     MainFrame main = new MainFrame();
     main.setVisible(true);
     dispose();
-}     
         
       
     }//GEN-LAST:event_accbot1ActionPerformed
