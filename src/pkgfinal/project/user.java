@@ -51,10 +51,11 @@ public class user extends javax.swing.JFrame {
         userlog.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("USER LOGGED");
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\log-in (5).png")); // NOI18N
+        jLabel1.setText("USER LOGGED IN");
 
         usertab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
