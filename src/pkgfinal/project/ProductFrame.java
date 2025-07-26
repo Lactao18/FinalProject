@@ -11,12 +11,27 @@ import javax.swing.JOptionPane;
  * @author Rainier
  */
 public class ProductFrame extends javax.swing.JFrame {
+    private Products productToEdit = null;
+    private int editIndex = -1;
     /**
      * Creates new form Product
      */
     public ProductFrame() {
         initComponents();
-        
+    }
+    public ProductFrame(Products product, boolean isUpdateMode) {
+        initComponents();
+    
+        if (product != null && isUpdateMode) {
+
+            tfcode.setText(product.getCode());
+            tfprodname.setText(product.getName());
+            tfprice.setText(String.valueOf(product.getPrice()));
+            tfquan.setText(String.valueOf(product.getQuantity()));
+            CategoryComboBox.setSelectedItem(product.getCategory());
+
+            AddButton.setText("Update");
+        }
     }
 
     /**
@@ -36,12 +51,10 @@ public class ProductFrame extends javax.swing.JFrame {
         tfprodname = new javax.swing.JTextField();
         tfprice = new javax.swing.JTextField();
         tfquan = new javax.swing.JTextField();
-        botadd = new javax.swing.JButton();
+        AddButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        stats = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         CategoryComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         botadd1 = new javax.swing.JButton();
@@ -53,13 +66,15 @@ public class ProductFrame extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Product Management");
+
+        jPanel2.setBackground(new java.awt.Color(40, 40, 40));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Jokerman", 0, 14)); // NOI18N
@@ -78,10 +93,10 @@ public class ProductFrame extends javax.swing.JFrame {
             }
         });
 
-        botadd.setText("ADD");
-        botadd.addActionListener(new java.awt.event.ActionListener() {
+        AddButton.setText("ADD");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaddActionPerformed(evt);
+                AddButtonActionPerformed(evt);
             }
         });
 
@@ -100,23 +115,13 @@ public class ProductFrame extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("QUANTITY");
 
-        stats.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statsActionPerformed(evt);
-            }
-        });
-
-        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel9.setFont(new java.awt.Font("Jokerman", 0, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("STATUS");
-
         CategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CategoryComboBoxActionPerformed(evt);
             }
         });
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Select Category");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -124,16 +129,8 @@ public class ProductFrame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(botadd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 144, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(stats)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel9))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(tfprice)
                     .addComponent(jLabel7)
@@ -142,11 +139,15 @@ public class ProductFrame extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(tfprodname, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                     .addComponent(tfcode))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(40, 40, 40))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(136, 136, 136)
+                .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tfcode, tfprice, tfprodname, tfquan});
@@ -172,26 +173,22 @@ public class ProductFrame extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfquan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(tfquan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19)))
-                .addComponent(stats, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(botadd, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                        .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfcode, tfprice, tfprodname, tfquan});
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, jLabel6, jLabel7, jLabel8});
 
+        botadd1.setBackground(new java.awt.Color(51, 51, 51));
+        botadd1.setForeground(new java.awt.Color(255, 255, 255));
         botadd1.setText("GO TO DASHBOARD");
         botadd1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,7 +224,7 @@ public class ProductFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(271, 271, 271)
                         .addComponent(botadd1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -258,41 +255,37 @@ public class ProductFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_botadd1ActionPerformed
 
-    private void botaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaddActionPerformed
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        try {
+            String code = tfcode.getText();         
+            String name = tfprodname.getText();         
+            double price = Double.parseDouble(tfprice.getText());
+            int quantity = Integer.parseInt(tfquan.getText());
+            String stat;
 
-                                            
-    try {
-        
-        String code = tfcode.getText();         
-        String name = tfprodname.getText();         
-        double price = Double.parseDouble(tfprice.getText());
-        int quantity = Integer.parseInt(tfquan.getText());
-        String stat = stats.getText();
-        String category = (String) CategoryComboBox.getSelectedItem();
-        Dashboard.productList.add(new Products(code, name, price, quantity, stat, category));
-        
-        JOptionPane.showMessageDialog(this, "Product added successfully!");
-        
-        tfcode.setText("");
-        tfprodname.setText("");
-        tfprice.setText("");
-        tfquan.setText("");
-        stats.setText("");
+            if (quantity == 0) stat = "Out of Stock";
+            else if (quantity <= 50) stat = "Low Stock";
+            else if (quantity <= 200) stat = "Below Average";
+            else if (quantity <= 500) stat = "Good Stock";
+            else stat = "High Stock";
+            String category = (String) CategoryComboBox.getSelectedItem();
+            
+            if (productToEdit != null && editIndex >= 0) {
+                Products updatedProduct = new Products(code, name, price, quantity, stat, category);
+                Dashboard.productList.set(editIndex, updatedProduct);
+                JOptionPane.showMessageDialog(this, "Product updated successfully!");
+            } else {
+                Products newProduct = new Products(code, name, price, quantity, stat, category);
+                Dashboard.productList.add(newProduct);
+                JOptionPane.showMessageDialog(this, "Product added successfully!");
+                }
 
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Please enter valid data.");
-    }
-        
-           
-    }//GEN-LAST:event_botaddActionPerformed
-
-    private void statsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statsActionPerformed
-       
-    }//GEN-LAST:event_statsActionPerformed
+        } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Please enter valid data.");
+        }
+    }//GEN-LAST:event_AddButtonActionPerformed
     
     private void loadCategoriesIntoComboBox() {
-
     for (String category : ManageCategory.categoryList) {
         CategoryComboBox.addItem(category);
         }
@@ -343,8 +336,8 @@ public class ProductFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddButton;
     private javax.swing.JComboBox<String> CategoryComboBox;
-    private javax.swing.JButton botadd;
     private javax.swing.JButton botadd1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -352,10 +345,8 @@ public class ProductFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField stats;
     private javax.swing.JTextField tfcode;
     private javax.swing.JTextField tfprice;
     private javax.swing.JTextField tfprodname;

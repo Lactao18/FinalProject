@@ -96,7 +96,8 @@ public class ManageCategory extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 69, 309, 353));
 
-        jLabel2.setText("Name: ");
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Category Name: ");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(356, 69, -1, -1));
 
         CategoryNameTF.addActionListener(new java.awt.event.ActionListener() {
