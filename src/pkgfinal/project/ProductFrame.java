@@ -10,11 +10,11 @@ import javax.swing.JOptionPane;
  *
  * @author Rainier
  */
-public class Product extends javax.swing.JFrame {
+public class ProductFrame extends javax.swing.JFrame {
     /**
      * Creates new form Product
      */
-    public Product() {
+    public ProductFrame() {
         initComponents();
         
     }
@@ -111,7 +111,6 @@ public class Product extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("STATUS");
 
-        CategoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Food" }));
         CategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CategoryComboBoxActionPerformed(evt);
@@ -144,10 +143,10 @@ public class Product extends javax.swing.JFrame {
                     .addComponent(tfprodname, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                     .addComponent(tfcode))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(CategoryComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(23, 23, 23))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(40, 40, 40))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tfcode, tfprice, tfprodname, tfquan});
@@ -254,7 +253,7 @@ public class Product extends javax.swing.JFrame {
     }//GEN-LAST:event_tfprodnameActionPerformed
 
     private void botadd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botadd1ActionPerformed
-        Dashbord dash = new Dashbord();
+        Dashboard dash = new Dashboard();
         dash.setVisible(true);
         dispose();
     }//GEN-LAST:event_botadd1ActionPerformed
@@ -263,20 +262,17 @@ public class Product extends javax.swing.JFrame {
 
                                             
     try {
-        // Get values from input fields
-        String code = tfcode.getText();         // Example: txtCode is your JTextField for code
-        String name = tfprodname.getText();         // Example: txtName is your JTextField for product name
+        
+        String code = tfcode.getText();         
+        String name = tfprodname.getText();         
         double price = Double.parseDouble(tfprice.getText());
         int quantity = Integer.parseInt(tfquan.getText());
         String stat = stats.getText();
         String category = (String) CategoryComboBox.getSelectedItem();
-        ProductStore.productList.add(new Products(code, name, price, quantity, stat, category));
-
-           
-        // Show confirmation
+        Dashboard.productList.add(new Products(code, name, price, quantity, stat, category));
+        
         JOptionPane.showMessageDialog(this, "Product added successfully!");
-
-        // Optional: Clear fields after adding
+        
         tfcode.setText("");
         tfprodname.setText("");
         tfprice.setText("");
@@ -292,7 +288,7 @@ public class Product extends javax.swing.JFrame {
     }//GEN-LAST:event_botaddActionPerformed
 
     private void statsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statsActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_statsActionPerformed
     
     private void loadCategoriesIntoComboBox() {
@@ -328,20 +324,20 @@ public class Product extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Product().setVisible(true);
+                new ProductFrame().setVisible(true);
             }
         });
     }

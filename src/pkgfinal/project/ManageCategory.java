@@ -232,7 +232,7 @@ public class ManageCategory extends javax.swing.JFrame {
     }//GEN-LAST:event_CategoryTableMouseClicked
 
     private void BackToDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToDashboardActionPerformed
-        Dashbord dash = new Dashbord();
+        Dashboard dash = new Dashboard();
         dash.setVisible(true);
         dispose();
     }//GEN-LAST:event_BackToDashboardActionPerformed

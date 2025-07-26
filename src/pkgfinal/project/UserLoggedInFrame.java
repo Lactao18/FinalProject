@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Rainier
  */
-public class user extends javax.swing.JFrame {
+public class UserLoggedInFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form user
@@ -17,7 +17,7 @@ public class user extends javax.swing.JFrame {
      * @param email
      * @param password
      */
-    public user(String name, String email, String password) {
+    public UserLoggedInFrame(String name, String email, String password) {
         initComponents();
         
         
@@ -25,7 +25,7 @@ public class user extends javax.swing.JFrame {
         model.addRow(new Object[]{name, email, password});
     }
 
-    public user() {
+    public UserLoggedInFrame() {
         initComponents();
     }
 
@@ -54,7 +54,7 @@ public class user extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("USER LOGGED");
+        jLabel1.setText("USER LOGGED IN");
 
         usertab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -129,20 +129,20 @@ public class user extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserLoggedInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserLoggedInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserLoggedInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserLoggedInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new user().setVisible(true);
+                new UserLoggedInFrame().setVisible(true);
             }
         });
     }

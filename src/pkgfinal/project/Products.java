@@ -17,21 +17,15 @@ public class Products {
         this.quantity = quantity;
         this.status=status;
         this.category=category;
-    }
-
-    /**
-     *
-     * @return
-     */
-    
+    }    
  
+    public String getCode() { return code; }
     public String getName() { return name; }
     public double getPrice() { return price; }
     public int getQuantity() { return quantity; }
     public String getStatus() { return status; }
     public String getCategory() { return category; }
 
-    Object getcode() {
-       return code; 
-    }
+   
+    
 }

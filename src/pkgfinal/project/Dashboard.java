@@ -4,13 +4,17 @@
  */
 package pkgfinal.project;
 
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Marc Louis A. Lactao
  */
-public class Dashbord extends javax.swing.JFrame {
+public class Dashboard extends javax.swing.JFrame {
+    public static ArrayList<Products> productList = new ArrayList<>();
+    public static ArrayList<CustomerInfo> customerList = new ArrayList<>();
+     
     private String name;
     private String email;
     private String password;
@@ -19,9 +23,9 @@ public void loadProductsToTable() {
     DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
     model.setRowCount(0);
 
-    for (Products p : ProductStore.productList) {
+    for (Products p : productList) {
         model.addRow(new Object[] {
-            p.getcode(),
+            p.getCode(),
             p.getName(),
             p.getPrice(),
             p.getQuantity(),
@@ -31,7 +35,7 @@ public void loadProductsToTable() {
     }
 }
 
-    public Dashbord(String name, String email, String password) {
+    public Dashboard(String name, String email, String password) {
         initComponents();
         this.name = name;
         this.email = email;
@@ -39,7 +43,7 @@ public void loadProductsToTable() {
     }
     
     
-    public Dashbord() {
+    public Dashboard() {
         initComponents();
         loadProductsToTable();
     }
@@ -60,7 +64,7 @@ public void loadProductsToTable() {
         jButton1 = new javax.swing.JButton();
         UserButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        CustomerButton = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         CategoryButton = new javax.swing.JButton();
@@ -110,8 +114,13 @@ public void loadProductsToTable() {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jButton5.setText("CUSTOMER");
+        CustomerButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        CustomerButton.setText("CUSTOMER");
+        CustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CustomerButtonActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jButton6.setText("ORDER");
@@ -150,14 +159,14 @@ public void loadProductsToTable() {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(UserButton, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                            .addComponent(CustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                             .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))))
                 .addGap(19, 19, 19))
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {UserButton, jButton4, jButton5, jButton6, jButton7});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {CustomerButton, UserButton, jButton4, jButton6, jButton7});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +178,7 @@ public void loadProductsToTable() {
                 .addGap(31, 31, 31)
                 .addComponent(CategoryButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addComponent(CustomerButton)
                 .addGap(35, 35, 35)
                 .addComponent(jButton6)
                 .addGap(27, 27, 27)
@@ -258,14 +267,13 @@ public void loadProductsToTable() {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void UserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserButtonActionPerformed
-        user userFrame = new user(name, email, password);
-        userFrame.setVisible(true);
+        new UserLoggedInFrame(name, email, password).setVisible(true);
+        this.dispose();
      
     }//GEN-LAST:event_UserButtonActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Product pro = new Product();
-        pro.setVisible(true);
+        new ProductFrame().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -286,6 +294,11 @@ public void loadProductsToTable() {
         this.dispose();
     }//GEN-LAST:event_CategoryButtonActionPerformed
 
+    private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
+        new CustomerFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CustomerButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -303,30 +316,30 @@ public void loadProductsToTable() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dashbord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dashbord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dashbord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dashbord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashbord().setVisible(true);
+                new Dashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CategoryButton;
+    private javax.swing.JButton CustomerButton;
     private javax.swing.JButton UserButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
