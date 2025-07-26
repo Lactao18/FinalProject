@@ -140,11 +140,11 @@ public class ProductFrame extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(tfprodname, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                     .addComponent(tfcode))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(40, 40, 40))
+                .addGap(0, 67, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(136, 136, 136)
                 .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,19 +258,54 @@ public class ProductFrame extends javax.swing.JFrame {
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         try {
-            String code = tfcode.getText();         
-            String name = tfprodname.getText();         
-            double price = Double.parseDouble(tfprice.getText());
-            int quantity = Integer.parseInt(tfquan.getText());
-            String stat;
+            String code = tfcode.getText();
+            String name = tfprodname.getText();
 
+            if (code.isEmpty() || name.isEmpty() || tfprice.getText().trim().isEmpty() || tfquan.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            double price;
+            int quantity;
+
+            try {
+                price = Double.parseDouble(tfprice.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid number for Price.","Error",JOptionPane.ERROR_MESSAGE);
+                tfprice.setText("");
+                return;
+            }
+
+            try {
+                quantity = Integer.parseInt(tfquan.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid number for Quantity.","Error",JOptionPane.ERROR_MESSAGE);
+                tfquan.setText("");
+                return;
+            }
+
+            if (ManageCategory.categoryList.isEmpty()) {
+                if (CategoryComboBox.getItemCount() == 0 || !CategoryComboBox.getItemAt(0).equals("Empty")) {
+                    CategoryComboBox.addItem("Empty");
+                }
+                if (CategoryComboBox.getSelectedItem().equals("Empty")) {
+                    JOptionPane.showMessageDialog(this, "Please input category first");
+                    new ManageCategory().setVisible(true);
+                    this.dispose();
+                    return;
+                }
+            }
+
+            String stat;
             if (quantity == 0) stat = "Out of Stock";
             else if (quantity <= 50) stat = "Low Stock";
             else if (quantity <= 200) stat = "Below Average";
             else if (quantity <= 500) stat = "Good Stock";
             else stat = "High Stock";
+
             String category = (String) CategoryComboBox.getSelectedItem();
-            
+
             if (productToEdit != null && editIndex >= 0) {
                 Products updatedProduct = new Products(code, name, price, quantity, stat, category);
                 Dashboard.productList.set(editIndex, updatedProduct);
@@ -279,11 +314,17 @@ public class ProductFrame extends javax.swing.JFrame {
                 Products newProduct = new Products(code, name, price, quantity, stat, category);
                 Dashboard.productList.add(newProduct);
                 JOptionPane.showMessageDialog(this, "Product added successfully!");
-                }
+            }
 
-        } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Please enter valid data.");
-        }
+            tfcode.setText("");
+            tfprodname.setText("");
+            tfprice.setText("");
+            tfquan.setText("");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
     }//GEN-LAST:event_AddButtonActionPerformed
     
     private void loadCategoriesIntoComboBox() {
@@ -298,7 +339,15 @@ public class ProductFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CategoryComboBoxActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+        if (ManageCategory.categoryList.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No category available. Please enter a category first.", "Error", JOptionPane.ERROR_MESSAGE);
+                new ManageCategory().setVisible(true);
+                dispose(); // Close ProductFrame
+                return;
+        } else { 
             loadCategoriesIntoComboBox();
+        }
     }//GEN-LAST:event_formWindowOpened
 
     /**

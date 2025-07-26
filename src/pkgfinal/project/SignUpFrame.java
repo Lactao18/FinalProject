@@ -12,9 +12,6 @@ import javax.swing.JOptionPane;
  */
 public class SignUpFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form signup
-     */
     public SignUpFrame() {
         initComponents();
     }

@@ -175,7 +175,8 @@ public class ManageCategory extends javax.swing.JFrame {
             if (isDuplicate) {
                 JOptionPane.showMessageDialog(this, "Category already exists!", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
             } else {
-                model.addRow(new Object[] {id, categoryName});
+                String formattedId = String.format("%04d", id);
+                model.addRow(new Object[] {formattedId, categoryName});
                 
                 categoryList.add(categoryName);
                 
