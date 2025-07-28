@@ -207,14 +207,21 @@ public void loadProductsToTable() {
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
-        ExitButton.setText("Exit");
+        ExitButton.setBackground(new java.awt.Color(255, 255, 255));
+        ExitButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ExitButton.setForeground(new java.awt.Color(0, 0, 0));
+        ExitButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\turn-off.png")); // NOI18N
+        ExitButton.setText("LOG OUT");
         ExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ExitButtonActionPerformed(evt);
             }
         });
 
+        UserButton.setBackground(new java.awt.Color(255, 255, 255));
         UserButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        UserButton.setForeground(new java.awt.Color(0, 0, 0));
+        UserButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\user (2).png")); // NOI18N
         UserButton.setText("USER");
         UserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,7 +229,10 @@ public void loadProductsToTable() {
             }
         });
 
+        ProductButton.setBackground(new java.awt.Color(255, 255, 255));
         ProductButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        ProductButton.setForeground(new java.awt.Color(0, 0, 0));
+        ProductButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\products (2).png")); // NOI18N
         ProductButton.setText("PRODUCT");
         ProductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,7 +240,10 @@ public void loadProductsToTable() {
             }
         });
 
+        CustomerButton.setBackground(new java.awt.Color(255, 255, 255));
         CustomerButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        CustomerButton.setForeground(new java.awt.Color(0, 0, 0));
+        CustomerButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\service.png")); // NOI18N
         CustomerButton.setText("CUSTOMER");
         CustomerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,7 +251,10 @@ public void loadProductsToTable() {
             }
         });
 
+        OrderButton.setBackground(new java.awt.Color(255, 255, 255));
         OrderButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        OrderButton.setForeground(new java.awt.Color(0, 0, 0));
+        OrderButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\received.png")); // NOI18N
         OrderButton.setText("ORDER");
         OrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,7 +262,10 @@ public void loadProductsToTable() {
             }
         });
 
+        ViewOrderButton.setBackground(new java.awt.Color(255, 255, 255));
         ViewOrderButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        ViewOrderButton.setForeground(new java.awt.Color(0, 0, 0));
+        ViewOrderButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\hierarchical-structure.png")); // NOI18N
         ViewOrderButton.setText("VIEW ORDER HISTORY");
         ViewOrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,7 +273,10 @@ public void loadProductsToTable() {
             }
         });
 
+        CategoryButton.setBackground(new java.awt.Color(255, 255, 255));
         CategoryButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        CategoryButton.setForeground(new java.awt.Color(0, 0, 0));
+        CategoryButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\app (1).png")); // NOI18N
         CategoryButton.setText("CATEGORY");
         CategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,20 +288,26 @@ public void loadProductsToTable() {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(CategoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CategoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(ExitButton)))
+                        .addGap(19, 19, 19))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ProductButton, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(UserButton, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                            .addComponent(CustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                             .addComponent(OrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                             .addComponent(ViewOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ProductButton, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))))
-                .addGap(19, 19, 19))
+                            .addComponent(CustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {CustomerButton, OrderButton, ProductButton, UserButton, ViewOrderButton});
@@ -287,27 +315,28 @@ public void loadProductsToTable() {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(UserButton)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addComponent(ProductButton)
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(CategoryButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(CustomerButton)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(OrderButton)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(ViewOrderButton)
-                .addGap(80, 80, 80)
+                .addGap(133, 133, 133)
                 .addComponent(ExitButton)
                 .addGap(25, 25, 25))
         );
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\product-management (2).png")); // NOI18N
         jLabel1.setText("Inventory and Sales Management System");
 
         UpdateProductButtton.setBackground(new java.awt.Color(51, 51, 51));
@@ -325,19 +354,20 @@ public void loadProductsToTable() {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(UpdateProductButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28))))
+                                .addGap(28, 28, 28)))
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(402, 402, 402)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(121, 121, 121)
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

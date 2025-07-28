@@ -49,14 +49,17 @@ public class UserLoggedInFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        userlog.setBackground(new java.awt.Color(255, 255, 255));
+        userlog.setBackground(new java.awt.Color(51, 51, 51));
+        userlog.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\user (2).png")); // NOI18N
         jLabel1.setText("USER LOGGED IN");
 
+        usertab.setBackground(new java.awt.Color(255, 255, 255));
         usertab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -75,6 +78,9 @@ public class UserLoggedInFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(usertab);
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Back to dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

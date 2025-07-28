@@ -50,6 +50,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -73,56 +74,61 @@ public class CustomerFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setFont(new java.awt.Font("Old English Text MT", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\info.png")); // NOI18N
         jLabel1.setText("Customer Information");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Name: ");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Email Address: ");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contact Number:");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Address: ");
 
-        CustomerNameTF.setBackground(new java.awt.Color(102, 102, 102));
+        CustomerNameTF.setBackground(new java.awt.Color(255, 255, 255));
         CustomerNameTF.setFont(new java.awt.Font("Book Antiqua", 0, 12)); // NOI18N
-        CustomerNameTF.setForeground(new java.awt.Color(255, 255, 255));
+        CustomerNameTF.setForeground(new java.awt.Color(0, 0, 0));
         CustomerNameTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerNameTFActionPerformed(evt);
             }
         });
 
-        CustomerEmailTF.setBackground(new java.awt.Color(102, 102, 102));
+        CustomerEmailTF.setBackground(new java.awt.Color(255, 255, 255));
         CustomerEmailTF.setFont(new java.awt.Font("Book Antiqua", 0, 12)); // NOI18N
-        CustomerEmailTF.setForeground(new java.awt.Color(255, 255, 255));
+        CustomerEmailTF.setForeground(new java.awt.Color(0, 0, 0));
         CustomerEmailTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerEmailTFActionPerformed(evt);
             }
         });
 
-        CustomerContactTF.setBackground(new java.awt.Color(102, 102, 102));
+        CustomerContactTF.setBackground(new java.awt.Color(255, 255, 255));
         CustomerContactTF.setFont(new java.awt.Font("Book Antiqua", 0, 12)); // NOI18N
-        CustomerContactTF.setForeground(new java.awt.Color(255, 255, 255));
+        CustomerContactTF.setForeground(new java.awt.Color(0, 0, 0));
 
-        CustomerAddressTF.setBackground(new java.awt.Color(102, 102, 102));
+        CustomerAddressTF.setBackground(new java.awt.Color(255, 255, 255));
         CustomerAddressTF.setFont(new java.awt.Font("Book Antiqua", 0, 12)); // NOI18N
-        CustomerAddressTF.setForeground(new java.awt.Color(255, 255, 255));
+        CustomerAddressTF.setForeground(new java.awt.Color(0, 0, 0));
         CustomerAddressTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomerAddressTFActionPerformed(evt);
             }
         });
 
-        CustomerTable.setBackground(new java.awt.Color(51, 51, 51));
-        CustomerTable.setForeground(new java.awt.Color(255, 255, 255));
+        CustomerTable.setBackground(new java.awt.Color(255, 255, 255));
+        CustomerTable.setForeground(new java.awt.Color(0, 0, 0));
         CustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -141,6 +147,10 @@ public class CustomerFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(CustomerTable);
 
+        AddButton.setBackground(java.awt.Color.white);
+        AddButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        AddButton.setForeground(new java.awt.Color(0, 0, 0));
+        AddButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\add-user (1).png")); // NOI18N
         AddButton.setText("Add");
         AddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,6 +158,10 @@ public class CustomerFrame extends javax.swing.JFrame {
             }
         });
 
+        UpdateButton.setBackground(java.awt.Color.white);
+        UpdateButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        UpdateButton.setForeground(new java.awt.Color(0, 0, 0));
+        UpdateButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\updated.png")); // NOI18N
         UpdateButton.setText("Update");
         UpdateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,6 +169,10 @@ public class CustomerFrame extends javax.swing.JFrame {
             }
         });
 
+        RemoveButton.setBackground(java.awt.Color.white);
+        RemoveButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        RemoveButton.setForeground(new java.awt.Color(0, 0, 0));
+        RemoveButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\delete.png")); // NOI18N
         RemoveButton.setText("Remove");
         RemoveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,13 +180,17 @@ public class CustomerFrame extends javax.swing.JFrame {
             }
         });
 
-        StatusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive", "Unknown" }));
+        StatusCB.setBackground(java.awt.Color.white);
+        StatusCB.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        StatusCB.setForeground(new java.awt.Color(0, 0, 0));
+        StatusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Select status");
 
-        BackToDashboard.setBackground(new java.awt.Color(51, 51, 51));
-        BackToDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        BackToDashboard.setBackground(java.awt.Color.white);
+        BackToDashboard.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BackToDashboard.setForeground(new java.awt.Color(0, 0, 0));
         BackToDashboard.setText("Back to dashboard");
         BackToDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,8 +233,8 @@ public class CustomerFrame extends javax.swing.JFrame {
                                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(StatusCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(43, 43, 43)
+                                .addComponent(jLabel1))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BackToDashboard)))
@@ -226,9 +248,9 @@ public class CustomerFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
+                        .addGap(37, 37, 37)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(CustomerNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -503,6 +525,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     private javax.swing.JButton RemoveButton;
     private javax.swing.JComboBox<String> StatusCB;
     private javax.swing.JButton UpdateButton;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

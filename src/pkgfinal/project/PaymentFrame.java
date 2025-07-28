@@ -53,7 +53,10 @@ public class PaymentFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
+        OrderListInPaymentForm.setBackground(new java.awt.Color(255, 255, 255));
         OrderListInPaymentForm.setColumns(20);
+        OrderListInPaymentForm.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        OrderListInPaymentForm.setForeground(new java.awt.Color(0, 0, 0));
         OrderListInPaymentForm.setRows(5);
         jScrollPane1.setViewportView(OrderListInPaymentForm);
 
@@ -61,10 +64,16 @@ public class PaymentFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Order List");
 
+        Amount.setBackground(new java.awt.Color(255, 255, 255));
+        Amount.setForeground(new java.awt.Color(0, 0, 0));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Payment amount: ");
 
+        ConfirmButton.setBackground(new java.awt.Color(255, 255, 255));
+        ConfirmButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ConfirmButton.setForeground(new java.awt.Color(0, 0, 0));
         ConfirmButton.setText("Confirm");
         ConfirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,7 +81,9 @@ public class PaymentFrame extends javax.swing.JFrame {
             }
         });
 
-        Backtodashboardbutton.setBackground(new java.awt.Color(51, 51, 51));
+        Backtodashboardbutton.setBackground(new java.awt.Color(255, 255, 255));
+        Backtodashboardbutton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Backtodashboardbutton.setForeground(new java.awt.Color(0, 0, 0));
         Backtodashboardbutton.setText("Back to dashboard");
         Backtodashboardbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,6 +96,8 @@ public class PaymentFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Total:");
 
+        TotalTextField.setBackground(new java.awt.Color(255, 255, 255));
+        TotalTextField.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane3.setViewportView(TotalTextField);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
@@ -92,6 +105,8 @@ public class PaymentFrame extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Change:");
 
+        ChangeTextPane.setBackground(new java.awt.Color(255, 255, 255));
+        ChangeTextPane.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(ChangeTextPane);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

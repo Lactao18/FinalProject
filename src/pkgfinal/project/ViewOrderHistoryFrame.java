@@ -48,12 +48,16 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        OrderListTA.setBackground(new java.awt.Color(51, 51, 51));
+        OrderListTA.setBackground(new java.awt.Color(255, 255, 255));
         OrderListTA.setColumns(20);
         OrderListTA.setForeground(new java.awt.Color(255, 255, 255));
         OrderListTA.setRows(5);
         jScrollPane1.setViewportView(OrderListTA);
 
+        ClearHistoryButton.setBackground(new java.awt.Color(255, 255, 255));
+        ClearHistoryButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ClearHistoryButton.setForeground(new java.awt.Color(0, 0, 0));
+        ClearHistoryButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\file (1).png")); // NOI18N
         ClearHistoryButton.setText("Clear history");
         ClearHistoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +65,9 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
             }
         });
 
+        BackToDashboard.setBackground(new java.awt.Color(255, 255, 255));
+        BackToDashboard.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BackToDashboard.setForeground(new java.awt.Color(0, 0, 0));
         BackToDashboard.setText("Back to dashboard");
         BackToDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

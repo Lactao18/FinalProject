@@ -68,17 +68,24 @@ public class OrderFrame extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Jokerman", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\manage.png")); // NOI18N
         jLabel1.setText("ORDER MANAGEMENT");
 
+        CategoryComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        CategoryComboBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        CategoryComboBox.setForeground(new java.awt.Color(0, 0, 0));
         CategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CategoryComboBoxActionPerformed(evt);
             }
         });
 
+        ProductSelectionTable.setBackground(new java.awt.Color(255, 255, 255));
+        ProductSelectionTable.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        ProductSelectionTable.setForeground(new java.awt.Color(0, 0, 0));
         ProductSelectionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -102,7 +109,7 @@ public class OrderFrame extends javax.swing.JFrame {
             ProductSelectionTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Select Product");
 
@@ -114,18 +121,26 @@ public class OrderFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Order List");
 
+        OrderListTextArea.setBackground(new java.awt.Color(255, 255, 255));
         OrderListTextArea.setColumns(20);
+        OrderListTextArea.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        OrderListTextArea.setForeground(new java.awt.Color(0, 0, 0));
         OrderListTextArea.setRows(5);
         jScrollPane2.setViewportView(OrderListTextArea);
 
+        CustomerNameOrderTF.setBackground(new java.awt.Color(255, 255, 255));
+        CustomerNameOrderTF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        CustomerNameOrderTF.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane4.setViewportView(CustomerNameOrderTF);
 
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Customer Name: ");
 
-        BackToDashboardButton.setBackground(new java.awt.Color(51, 51, 51));
-        BackToDashboardButton.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
-        BackToDashboardButton.setForeground(new java.awt.Color(255, 255, 255));
+        BackToDashboardButton.setBackground(new java.awt.Color(255, 255, 255));
+        BackToDashboardButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BackToDashboardButton.setForeground(new java.awt.Color(0, 0, 0));
         BackToDashboardButton.setText("Back to dashboard");
         BackToDashboardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,9 +148,10 @@ public class OrderFrame extends javax.swing.JFrame {
             }
         });
 
-        ProceedToPayment.setBackground(new java.awt.Color(51, 51, 51));
-        ProceedToPayment.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        ProceedToPayment.setForeground(new java.awt.Color(255, 255, 255));
+        ProceedToPayment.setBackground(new java.awt.Color(255, 255, 255));
+        ProceedToPayment.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ProceedToPayment.setForeground(new java.awt.Color(0, 0, 0));
+        ProceedToPayment.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\payment-method.png")); // NOI18N
         ProceedToPayment.setText("Proceed to payment");
         ProceedToPayment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +159,9 @@ public class OrderFrame extends javax.swing.JFrame {
             }
         });
 
+        CustomerList.setBackground(new java.awt.Color(255, 255, 255));
+        CustomerList.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        CustomerList.setForeground(new java.awt.Color(0, 0, 0));
         CustomerList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -164,6 +183,8 @@ public class OrderFrame extends javax.swing.JFrame {
             CustomerList.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Customer List");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -178,7 +199,7 @@ public class OrderFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(81, 81, 81)
+                                .addGap(71, 71, 71)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -215,13 +236,14 @@ public class OrderFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
+                        .addGap(66, 66, 66)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
