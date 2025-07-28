@@ -4,6 +4,11 @@
  */
 package pkgfinal.project;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -52,7 +57,7 @@ public class ManageCategory extends javax.swing.JFrame {
         CategoryNameTF = new javax.swing.JTextField();
         SaveButton = new javax.swing.JButton();
         UpdateButton = new javax.swing.JButton();
-        ResetButton = new javax.swing.JButton();
+        DeleteButton = new javax.swing.JButton();
         BackToDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -123,8 +128,13 @@ public class ManageCategory extends javax.swing.JFrame {
         });
         jPanel1.add(UpdateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
 
-        ResetButton.setText("Reset");
-        jPanel1.add(ResetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, -1, -1));
+        DeleteButton.setText("Delete");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(DeleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, -1, -1));
 
         BackToDashboard.setText("Back To Dashboard");
         BackToDashboard.addActionListener(new java.awt.event.ActionListener() {
@@ -146,8 +156,31 @@ public class ManageCategory extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void saveCategoriesToFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("categories.txt"))) {
+            for (String category : categoryList) {
+                writer.println(category);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void loadCategoriesFromFile() {
+        categoryList.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader("categories.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                categoryList.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("No saved category file found. A new one will be created.");
+        }
+    }
+    
     private void CategoryNameTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryNameTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CategoryNameTFActionPerformed
@@ -156,13 +189,11 @@ public class ManageCategory extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) CategoryTable.getModel();
         String categoryName = CategoryNameTF.getText().trim();
 
-            // Check if the field is empty
         if (categoryName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Category name cannot be empty", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-            // Check for duplicates
         boolean isDuplicate = false;
         for (int i = 0; i < model.getRowCount(); i++) {
             String existingCategory = model.getValueAt(i, 1).toString();
@@ -179,6 +210,7 @@ public class ManageCategory extends javax.swing.JFrame {
                 model.addRow(new Object[] {formattedId, categoryName});
                 
                 categoryList.add(categoryName);
+                saveCategoriesToFile();
                 
                 CategoryNameTF.setText("");
                 id++;
@@ -191,19 +223,16 @@ public class ManageCategory extends javax.swing.JFrame {
         int selectedRow = CategoryTable.getSelectedRow();
         String updatedCategoryName = CategoryNameTF.getText().trim();
 
-        // No row selected
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Empty name check
         if (updatedCategoryName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Category name cannot be empty.", "Empty Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Duplicate check (excluding selected row)
         for (int i = 0; i < model.getRowCount(); i++) {
             if (i == selectedRow) continue; // skip the row being updated
             String existingCategory = model.getValueAt(i, 1).toString();
@@ -213,19 +242,17 @@ public class ManageCategory extends javax.swing.JFrame {
 
         }
 
-        // Update the category name
         model.setValueAt(updatedCategoryName, selectedRow, 1); // column 1 = category name
         JOptionPane.showMessageDialog(this, "Category updated successfully!");
 
-        // Reset field and selection
         CategoryNameTF.setText("");
         }
 
-        // Update the table
         model.setValueAt(updatedCategoryName, selectedRow, 1);
 
-        // Update categoryList as well
         categoryList.set(selectedRow, updatedCategoryName);
+        
+        saveCategoriesToFile();
 
     }//GEN-LAST:event_UpdateButtonActionPerformed
 
@@ -241,19 +268,54 @@ public class ManageCategory extends javax.swing.JFrame {
 
     private void loadCategoryListToTable() {
     DefaultTableModel model = (DefaultTableModel) CategoryTable.getModel();
-    model.setRowCount(0); // Clear existing rows to avoid duplicates
+    model.setRowCount(0); 
 
-    id = 1; // Reset ID so it matches correctly
+    id = 1;
     for (String name : categoryList) {
         model.addRow(new Object[]{id, name});
         id++;
     }
 }
-    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        loadCategoriesFromFile();
         loadCategoryListToTable();
     }//GEN-LAST:event_formWindowOpened
 
+    
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+      DefaultTableModel model = (DefaultTableModel) CategoryTable.getModel();
+    int selectedRow = model.getRowCount() > 0 ? CategoryTable.getSelectedRow() : -1;
+    if (selectedRow >= 0) {
+        String categoryName = model.getValueAt(selectedRow, 1).toString();
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to delete the category \"" + categoryName + "\"?\n"
+            + "All products under this category will also be deleted.",
+            "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            categoryList.remove(selectedRow);
+            model.removeRow(selectedRow);
+            saveCategoriesToFile();
+
+            Dashboard.productList.removeIf(product -> product.getCategory().equalsIgnoreCase(categoryName));
+
+            dashboard.updateProductTable();
+            dashboard.removeProductsWithDeletedCategories();
+
+            JOptionPane.showMessageDialog(this,
+                "Category \"" + categoryName + "\" and its associated products have been deleted.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a category to delete.");
+    }
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
+    private Dashboard dashboard;
+
+        public ManageCategory(Dashboard dashboard) {
+        initComponents();
+        this.dashboard = dashboard;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -293,7 +355,7 @@ public class ManageCategory extends javax.swing.JFrame {
     private javax.swing.JButton BackToDashboard;
     private javax.swing.JTextField CategoryNameTF;
     private javax.swing.JTable CategoryTable;
-    private javax.swing.JButton ResetButton;
+    private javax.swing.JButton DeleteButton;
     private javax.swing.JButton SaveButton;
     private javax.swing.JButton UpdateButton;
     private javax.swing.JLabel jLabel1;

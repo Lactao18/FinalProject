@@ -4,8 +4,12 @@
  */
 package pkgfinal.project;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.management.modelmbean.ModelMBean;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +25,46 @@ public class Dashboard extends javax.swing.JFrame {
     private String email;
     private String password;
     
+    public void removeProductsWithDeletedCategories() {
+    DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
+
+    
+    ArrayList<String> validCategories = new ArrayList<>();
+    for (String c : ManageCategory.categoryList) {
+        validCategories.add(c);
+    }
+
+    for (int i = model.getRowCount() - 1; i >= 0; i--) {
+        String categoryInRow = model.getValueAt(i, 5).toString();
+        boolean categoryExists = validCategories.stream()
+                .anyMatch(c -> c.equalsIgnoreCase(categoryInRow));
+        if (!categoryExists) {
+            String codeToDelete = model.getValueAt(i, 0).toString();
+            model.removeRow(i);
+            productList.removeIf(p -> p.getCode().equalsIgnoreCase(codeToDelete));
+        }
+    }
+
+    saveProductsToFile();
+}
+
+    
+    
+      public void updateProductTable() {
+    DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
+    model.setRowCount(0);
+
+    for (Products p : productList) {
+        model.addRow(new Object[]{
+            p.getCode(),
+            p.getName(),
+            p.getPrice(),
+            p.getQuantity(),
+            p.getStatus(),
+            p.getCategory()
+        });
+    }
+}
 public void loadProductsToTable() {
     DefaultTableModel model = (DefaultTableModel) prodtable.getModel();
     model.setRowCount(0);
@@ -47,9 +91,70 @@ public void loadProductsToTable() {
     
     public Dashboard() {
         initComponents();
+        loadProductsFromFile();
         loadProductsToTable();
+        
     }
+    
+    public static void deductProductQuantity(String productCode, int quantityToDeduct) {
+        for (Products p : productList) {
+            if (p.getCode().equalsIgnoreCase(productCode)) {
+                int newQuantity = p.getQuantity() - quantityToDeduct;
+                if (newQuantity < 0) {
+                    JOptionPane.showMessageDialog(null, "Not enough stock for " + p.getName(), "Stock Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
+                Products updated = new Products(
+                    p.getCode(),
+                    p.getName(),
+                    p.getPrice(),
+                    newQuantity,
+                    p.getStatus(),
+                    p.getCategory()
+                );
+                productList.set(productList.indexOf(p), updated);
+                saveProductsToFile();
+                break;
+            }
+        }
+    }
+    
+    public static void saveProductsToFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("products.txt"))) {
+        for (Products p : productList) {
+            writer.println(p.getCode() + "," +
+                           p.getName() + "," +
+                           p.getPrice() + "," +
+                           p.getQuantity() + "," +
+                           p.getStatus() + "," +
+                           p.getCategory());
+        }
+        } catch (IOException e) {
+            System.out.println("Error saving products: " + e.getMessage());
+        }
+    }
+    
+    public static void loadProductsFromFile() {
+        productList.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader("products.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 6) {
+                    String code = parts[0];
+                    String name = parts[1];
+                    double price = Double.parseDouble(parts[2]);
+                    int quantity = Integer.parseInt(parts[3]);
+                    String status = parts[4];
+                    String category = parts[5];
+                    productList.add(new Products(code, name, price, quantity, status, category));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading products: " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,11 +176,14 @@ public void loadProductsToTable() {
         ViewOrderButton = new javax.swing.JButton();
         CategoryButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        SearchBarTF = new javax.swing.JTextField();
-        SearchButton = new javax.swing.JButton();
         UpdateProductButtton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -202,19 +310,6 @@ public void loadProductsToTable() {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Inventory and Sales Management System");
 
-        SearchBarTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchBarTFActionPerformed(evt);
-            }
-        });
-
-        SearchButton.setText("Search Item 🔍");
-        SearchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchButtonActionPerformed(evt);
-            }
-        });
-
         UpdateProductButtton.setBackground(new java.awt.Color(51, 51, 51));
         UpdateProductButtton.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         UpdateProductButtton.setForeground(new java.awt.Color(255, 255, 255));
@@ -234,15 +329,11 @@ public void loadProductsToTable() {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(UpdateProductButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(SearchButton)
-                                    .addComponent(SearchBarTF, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15))))
+                                .addGap(28, 28, 28))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(402, 402, 402)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -256,12 +347,8 @@ public void loadProductsToTable() {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SearchBarTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(SearchButton)
-                            .addComponent(UpdateProductButtton))
+                        .addGap(38, 38, 38)
+                        .addComponent(UpdateProductButtton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -284,10 +371,6 @@ public void loadProductsToTable() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SearchBarTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBarTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchBarTFActionPerformed
-
     private void UserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserButtonActionPerformed
         new UserLoggedInFrame(name, email, password).setVisible(true);
         this.dispose();
@@ -305,15 +388,12 @@ public void loadProductsToTable() {
     }//GEN-LAST:event_OrderButtonActionPerformed
 
     private void ViewOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewOrderButtonActionPerformed
-        // TODO add your handling code here:
+        new ViewOrderHistoryFrame().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_ViewOrderButtonActionPerformed
 
-    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchButtonActionPerformed
-
     private void CategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryButtonActionPerformed
-        new ManageCategory().setVisible(true);
+        new ManageCategory(this).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CategoryButtonActionPerformed
 
@@ -337,8 +417,14 @@ public void loadProductsToTable() {
     }//GEN-LAST:event_UpdateProductButttonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
-        
+        new MainFrame().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_ExitButtonActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        updateProductTable();
+        removeProductsWithDeletedCategories();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -381,8 +467,6 @@ public void loadProductsToTable() {
     private javax.swing.JButton ExitButton;
     private javax.swing.JButton OrderButton;
     private javax.swing.JButton ProductButton;
-    private javax.swing.JTextField SearchBarTF;
-    private javax.swing.JButton SearchButton;
     private javax.swing.JButton UpdateProductButtton;
     private javax.swing.JButton UserButton;
     private javax.swing.JButton ViewOrderButton;

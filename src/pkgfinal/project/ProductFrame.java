@@ -240,6 +240,7 @@ public class ProductFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tfcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfcodeActionPerformed
@@ -309,10 +310,12 @@ public class ProductFrame extends javax.swing.JFrame {
             if (productToEdit != null && editIndex >= 0) {
                 Products updatedProduct = new Products(code, name, price, quantity, stat, category);
                 Dashboard.productList.set(editIndex, updatedProduct);
+                Dashboard.saveProductsToFile();
                 JOptionPane.showMessageDialog(this, "Product updated successfully!");
             } else {
                 Products newProduct = new Products(code, name, price, quantity, stat, category);
                 Dashboard.productList.add(newProduct);
+                Dashboard.saveProductsToFile();
                 JOptionPane.showMessageDialog(this, "Product added successfully!");
             }
 

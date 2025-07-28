@@ -4,15 +4,22 @@
  */
 package pkgfinal.project;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
+import pkgfinal.project.Dashboard;
+import static pkgfinal.project.UserFileManager.hashPassword;
 
 /**
  *
  * @author Marc Louis A. Lactao
  */
-public class LogInFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
+
+    static Object users;
+
     /**
      *
      */
@@ -20,7 +27,7 @@ public class LogInFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public LogInFrame() {
+    public MainFrame() {
         initComponents();
     }
 
@@ -298,38 +305,58 @@ public class LogInFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_showpassActionPerformed
 
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
-      String name = tfname.getText().trim();
-        String email = tfemail.getText().trim();
+       String name = tfname.getText().trim();
+    String email = tfemail.getText().trim();
     String password = new String(pass.getPassword()).trim();
 
-    boolean found = false;
-
-    for (String[] user : LogInFrame.user) { // Make sure 'users' is accessible
-        if (user[1].equals(email) && user[2].equals(password)) {
-            found = true;
-            break;
-        }
+    // Step 1: Check for empty fields
+    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill all fields before logging in.");
+        return;
     }
 
+    String hashedInput = hashPassword(password);
+    boolean found = false;
+
+    // Step 2: Check users.txt for matching credentials
+    try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (parts.length == 3 && parts[0].equals(name) && parts[1].equals(email) && parts[2].equals(hashedInput)) {
+                found = true;
+                break;
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error reading user file.");
+        e.printStackTrace();
+        return;
+    }
+
+    // Step 3: React to login status
     if (found) {
         JOptionPane.showMessageDialog(this, "Log in successful!");
-        
+
         // Optionally clear fields
+        tfname.setText("");
         tfemail.setText("");
         pass.setText("");
 
         // Switch to Dashboard frame
-        Dashboard dash = new Dashboard(name, email, password); // Pass name if needed
+        Dashboard dash = new Dashboard(name, email,password); // Pass what you need
         dash.setVisible(true);
         dispose();
+
     } else {
-        JOptionPane.showMessageDialog(this, "Log in failed. Please sign up first.");
+        JOptionPane.showMessageDialog(this, "Invalid credentials. Please create an account first.");
     }
     }//GEN-LAST:event_login1ActionPerformed
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            new SignUpFrame().setVisible(true);
-            this.dispose();
+            signup sign = new signup();
+            sign.setVisible(true);
+            dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -350,20 +377,20 @@ public class LogInFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LogInFrame().setVisible(true);
+                new MainFrame().setVisible(true);
             }
         });
     }

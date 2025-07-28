@@ -4,6 +4,12 @@
  */
 package pkgfinal.project;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,12 +18,26 @@ import javax.swing.table.DefaultTableModel;
  * @author Marc Louis A. Lactao
  */
 public class CustomerFrame extends javax.swing.JFrame {
+    private final String customerFile = "customers.txt";
 
     /**
      * Creates new form CustomerFrame
      */
     public CustomerFrame() {
         initComponents();
+        CustomerTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = CustomerTable.getSelectedRow();
+                if (selectedRow >= 0) {
+                    CustomerNameTF.setText(CustomerTable.getValueAt(selectedRow, 0).toString());
+                    CustomerEmailTF.setText(CustomerTable.getValueAt(selectedRow, 1).toString());
+                    CustomerContactTF.setText(CustomerTable.getValueAt(selectedRow, 2).toString());
+                    CustomerAddressTF.setText(CustomerTable.getValueAt(selectedRow, 3).toString());
+                    StatusCB.setSelectedItem(CustomerTable.getValueAt(selectedRow, 4).toString());
+                }
+            }
+        });
+        loadCustomersFromFile();
         
     }
 
@@ -43,7 +63,7 @@ public class CustomerFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         CustomerTable = new javax.swing.JTable();
         AddButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        UpdateButton = new javax.swing.JButton();
         RemoveButton = new javax.swing.JButton();
         StatusCB = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -128,9 +148,19 @@ public class CustomerFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Update");
+        UpdateButton.setText("Update");
+        UpdateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateButtonActionPerformed(evt);
+            }
+        });
 
         RemoveButton.setText("Remove");
+        RemoveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoveButtonActionPerformed(evt);
+            }
+        });
 
         StatusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive", "Unknown" }));
 
@@ -170,7 +200,7 @@ public class CustomerFrame extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jButton2)
+                                                .addComponent(UpdateButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(RemoveButton))
                                             .addComponent(CustomerNameTF)
@@ -221,7 +251,7 @@ public class CustomerFrame extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(AddButton)
-                            .addComponent(jButton2)
+                            .addComponent(UpdateButton)
                             .addComponent(RemoveButton)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -257,33 +287,53 @@ public class CustomerFrame extends javax.swing.JFrame {
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
         try {
-            String cusName = CustomerNameTF.getText();
-            String cusEmail = CustomerEmailTF.getText();
-            String contactText = CustomerContactTF.getText();
-            String address = CustomerAddressTF.getText();
+            String cusName = CustomerNameTF.getText().trim();
+            String cusEmail = CustomerEmailTF.getText().trim();
+            String contactText = CustomerContactTF.getText().trim();
+            String address = CustomerAddressTF.getText().trim();
             String status = (String) StatusCB.getSelectedItem();
-            long contact = 0;
+
             if (cusName.isEmpty() || cusEmail.isEmpty() || contactText.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter all fields");
-            } else {
-                contact = Long.parseLong(contactText);
-                Dashboard.customerList.add(new CustomerInfo(cusName, cusEmail, contact, address));
-                JOptionPane.showMessageDialog(this, "Customer added successfully!");
-                model.addRow(new Object[]{cusName, cusEmail, contact, address, status});
-            
-                CustomerNameTF.setText("");
-                CustomerEmailTF.setText("");
-                CustomerContactTF.setText("");
-                CustomerAddressTF.setText("");
+                JOptionPane.showMessageDialog(this, "Please enter all required fields (Name, Email, Contact).");
+                return;
             }
-        } catch (Exception e) {
-             JOptionPane.showMessageDialog(this, 
-                                          "Please enter a valid contact number",
-                                          "Try again",
-                                          JOptionPane.ERROR_MESSAGE);
+
+            long contact = Long.parseLong(contactText);
+
+            for (CustomerInfo c : Dashboard.customerList) {
+                if (c.getCusName().equalsIgnoreCase(cusName)) {
+                    JOptionPane.showMessageDialog(this, "Customer name already exists!", "Duplicate Entry", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (c.getCusEmail().equalsIgnoreCase(cusEmail)) {
+                    JOptionPane.showMessageDialog(this, "Customer email already exists!", "Duplicate Entry", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (c.getCusContact() == contact) {
+                    JOptionPane.showMessageDialog(this, "Customer contact number already exists!", "Duplicate Entry", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            Dashboard.customerList.add(new CustomerInfo(cusName, cusEmail, contact, address, status));
+            model.addRow(new Object[]{cusName, cusEmail, contact, address, status});
+            saveCustomersToFile();
+
+            JOptionPane.showMessageDialog(this, "Customer added successfully!");
+
+            CustomerNameTF.setText("");
+            CustomerEmailTF.setText("");
+            CustomerContactTF.setText("");
+            CustomerAddressTF.setText("");
+            StatusCB.setSelectedIndex(0);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter a valid numeric contact number.",
+                "Invalid Contact",
+                JOptionPane.ERROR_MESSAGE);
         }
-            
-        
+
     }//GEN-LAST:event_AddButtonActionPerformed
 
     private void BackToDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToDashboardActionPerformed
@@ -291,6 +341,122 @@ public class CustomerFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BackToDashboardActionPerformed
 
+    private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
+        int selectedRow = CustomerTable.getSelectedRow();
+        if (selectedRow >= 0) {
+             String updatedName = CustomerNameTF.getText().trim();
+             String updatedEmail = CustomerEmailTF.getText().trim();
+             String updatedContact = CustomerContactTF.getText().trim();
+             String updatedAddress = CustomerAddressTF.getText().trim();
+             String updatedStatus = StatusCB.getSelectedItem().toString();
+
+             if (updatedName.isEmpty() || updatedEmail.isEmpty() || updatedContact.isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Name, Email, and Contact fields cannot be empty.", "Missing Fields", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+
+             try {
+                 long contactNum = Long.parseLong(updatedContact);
+
+                 for (int i = 0; i < Dashboard.customerList.size(); i++) {
+                     if (i == selectedRow) continue;
+                     CustomerInfo existing = Dashboard.customerList.get(i);
+                     if (existing.getCusName().equalsIgnoreCase(updatedName)) {
+                         JOptionPane.showMessageDialog(this, "Another customer with this name already exists.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                     if (existing.getCusEmail().equalsIgnoreCase(updatedEmail)) {
+                         JOptionPane.showMessageDialog(this, "Another customer with this email already exists.", "Duplicate Email", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                     if (existing.getCusContact() == contactNum) {
+                         JOptionPane.showMessageDialog(this, "Another customer with this contact number already exists.", "Duplicate Contact", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                 }
+
+                 DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
+                 model.setValueAt(updatedName, selectedRow, 0);
+                 model.setValueAt(updatedEmail, selectedRow, 1);
+                 model.setValueAt(contactNum, selectedRow, 2);
+                 model.setValueAt(updatedAddress, selectedRow, 3);
+                 model.setValueAt(updatedStatus, selectedRow, 4);
+
+                 CustomerInfo updatedCustomer = new CustomerInfo(updatedName, updatedEmail, contactNum, updatedAddress, updatedStatus);
+                 Dashboard.customerList.set(selectedRow, updatedCustomer);
+
+                 saveCustomersToFile();
+                 JOptionPane.showMessageDialog(this, "Customer updated successfully!");
+
+             } catch (NumberFormatException e) {
+                 JOptionPane.showMessageDialog(this, "Please enter a valid numeric contact number.", "Invalid Contact", JOptionPane.ERROR_MESSAGE);
+             }
+
+         } else {
+             JOptionPane.showMessageDialog(this, "Please select a customer to update.", "No Selection", JOptionPane.WARNING_MESSAGE);
+         }
+    }//GEN-LAST:event_UpdateButtonActionPerformed
+
+    private void RemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveButtonActionPerformed
+        int selectedRow = CustomerTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            String nameToRemove = CustomerTable.getValueAt(selectedRow, 0).toString();
+
+            Dashboard.customerList.removeIf(c -> c.getCusName().equals(nameToRemove));
+
+            DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
+            model.removeRow(selectedRow);
+
+            CustomerNameTF.setText("");
+            CustomerEmailTF.setText("");
+            CustomerContactTF.setText("");
+            CustomerAddressTF.setText("");
+            StatusCB.setSelectedIndex(0);
+
+            saveCustomersToFile();
+
+            JOptionPane.showMessageDialog(this, "Customer removed successfully.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a customer to remove.");
+        }
+    }//GEN-LAST:event_RemoveButtonActionPerformed
+    
+    private void saveCustomersToFile() {
+    try (PrintWriter pw = new PrintWriter(new FileWriter(customerFile))) {
+        for (CustomerInfo c : Dashboard.customerList) {
+            pw.println(c.getCusName() + "," + c.getCusEmail() + "," + c.getCusContact() + "," + c.getCusAddress() + "," + c.getCusStatus());
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error saving customer data.");
+    }
+}
+
+    private void loadCustomersFromFile() {
+    File file = new File(customerFile);
+    if (!file.exists()) return;
+
+    try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
+        String line;
+        DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
+        while ((line = br.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data.length == 5) {
+                String name = data[0];
+                String email = data[1];
+                long contact = Long.parseLong(data[2]);
+                String address = data[3];
+                String status = data[4];
+
+                CustomerInfo customer = new CustomerInfo(name, email, contact, address, status);
+                Dashboard.customerList.add(customer);
+                model.addRow(new Object[]{name, email, contact, address, status});
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error loading customer data.");
+    }
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -336,7 +502,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     private javax.swing.JTable CustomerTable;
     private javax.swing.JButton RemoveButton;
     private javax.swing.JComboBox<String> StatusCB;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton UpdateButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

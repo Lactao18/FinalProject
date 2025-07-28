@@ -5,14 +5,20 @@
 package pkgfinal.project;
 
 import javax.swing.JOptionPane;
+import pkgfinal.project.MainFrame;
+import pkgfinal.project.MainFrame;
+import pkgfinal.project.UserFileManager;
 
 /**
  *
  * @author Rainier
  */
-public class SignUpFrame extends javax.swing.JFrame {
+public class signup extends javax.swing.JFrame {
 
-    public SignUpFrame() {
+    /**
+     * Creates new form signup
+     */
+    public signup() {
         initComponents();
     }
 
@@ -34,6 +40,8 @@ public class SignUpFrame extends javax.swing.JFrame {
         accname = new javax.swing.JTextField();
         accbot1 = new javax.swing.JButton();
         accpass = new javax.swing.JPasswordField();
+        showpass = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +86,22 @@ public class SignUpFrame extends javax.swing.JFrame {
             }
         });
 
+        showpass.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
+        showpass.setForeground(new java.awt.Color(0, 0, 0));
+        showpass.setText("Show password");
+        showpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showpassActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("BACK TO DASHBOARD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -88,20 +112,24 @@ public class SignUpFrame extends javax.swing.JFrame {
                         .addGap(97, 97, 97)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(accbot1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(accname, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                            .addComponent(accemail, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(accpass))))
-                .addContainerGap(117, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(showpass, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(accname, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                                .addComponent(accemail, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(accpass))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(accbot1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {accemail, accname});
@@ -123,9 +151,13 @@ public class SignUpFrame extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
                 .addComponent(accpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addComponent(accbot1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(showpass)
+                .addGap(62, 62, 62)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(accbot1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,6 +172,7 @@ public class SignUpFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void accemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accemailActionPerformed
@@ -151,25 +184,55 @@ public class SignUpFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_accnameActionPerformed
 
     private void accbot1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accbot1ActionPerformed
-        String name = accname.getText().trim();
-        String email = accemail.getText().trim();   
-        String password = new String(accpass.getPassword()).trim();
+       String name = accname.getText().trim();
+    String email = accemail.getText().trim();
+    String password = new String(accpass.getPassword()).trim();
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else {
-    
-            String[] newUser = { name, email, password };
-            LogInFrame.user.add(newUser); 
+    // Step 1: Validate input
+    if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-            accname.setText("");
-            accemail.setText("");
-            accpass.setText("");
+    // Step 2: Check for duplicate email (optional but helpful)
+    if (UserFileManager.isValidLogin(name, email, password)) {
+        JOptionPane.showMessageDialog(this, "This account already exists.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        new LogInFrame().setVisible(true);
-        this.dispose();
-        }     
+    // Step 3: Save user to file
+    UserFileManager.saveUser(name, email, password);
+
+    // Step 4: Clear fields
+    accname.setText("");
+    accemail.setText("");
+    accpass.setText("");
+
+    JOptionPane.showMessageDialog(this, "Account created successfully!");
+
+    // Step 5: Navigate back to login
+    MainFrame main = new MainFrame();
+    main.setVisible(true);
+    dispose();
+        
+      
     }//GEN-LAST:event_accbot1ActionPerformed
+
+    private void showpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showpassActionPerformed
+        if (showpass.isSelected()) {
+            // Show password as plain text
+            accpass.setEchoChar((char) 0);
+        } else {
+            // Mask the password again
+            accpass.setEchoChar('•'); // or '*'
+        }
+    }//GEN-LAST:event_showpassActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      MainFrame MAIN = new MainFrame();
+      MAIN.setVisible(true);
+      this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,20 +251,20 @@ public class SignUpFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignUpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignUpFrame().setVisible(true);
+                new signup().setVisible(true);
             }
         });
     }
@@ -211,10 +274,12 @@ public class SignUpFrame extends javax.swing.JFrame {
     private javax.swing.JTextField accemail;
     private javax.swing.JTextField accname;
     private javax.swing.JPasswordField accpass;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JCheckBox showpass;
     // End of variables declaration//GEN-END:variables
 }

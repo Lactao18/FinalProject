@@ -6,7 +6,9 @@ package pkgfinal.project;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 /**
  *
  * @author Marc Louis A. Lactao
@@ -19,6 +21,7 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
     public ViewOrderHistoryFrame() {
         initComponents();
         loadOrderHistory();
+        
     }
 
     /**
@@ -33,8 +36,15 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         OrderListTA = new javax.swing.JTextArea();
+        ClearHistoryButton = new javax.swing.JButton();
+        BackToDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -44,20 +54,43 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
         OrderListTA.setRows(5);
         jScrollPane1.setViewportView(OrderListTA);
 
+        ClearHistoryButton.setText("Clear history");
+        ClearHistoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearHistoryButtonActionPerformed(evt);
+            }
+        });
+
+        BackToDashboard.setText("Back to dashboard");
+        BackToDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackToDashboardActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ClearHistoryButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BackToDashboard))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ClearHistoryButton)
+                    .addComponent(BackToDashboard))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -75,14 +108,43 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    
+    private void BackToDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToDashboardActionPerformed
+        new Dashboard().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackToDashboardActionPerformed
+
+    private void ClearHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearHistoryButtonActionPerformed
+        ClearHistoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearOrderHistory();
+        }
+                });
+    }//GEN-LAST:event_ClearHistoryButtonActionPerformed
+
+    private void clearOrderHistory() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("orders_history.txt"))) {
+            writer.print("");  // Overwrites with nothing
+            OrderListTA.setText("No order history.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Order history cleared.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error clearing order history.");
+        }
+    }
     /**
      * @param args the command line arguments
      */
     
     private void loadOrderHistory() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("orders.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("orders_history.txt"))) {
             StringBuilder content = new StringBuilder();
             String line;
 
@@ -132,6 +194,8 @@ public class ViewOrderHistoryFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackToDashboard;
+    private javax.swing.JButton ClearHistoryButton;
     private javax.swing.JTextArea OrderListTA;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
