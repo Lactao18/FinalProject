@@ -55,7 +55,6 @@ public class signup extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\user (2).png")); // NOI18N
         jLabel7.setText("ACCOUNT SET UP");
 
         jLabel8.setFont(new java.awt.Font("Lucida Console", 1, 14)); // NOI18N
@@ -89,7 +88,6 @@ public class signup extends javax.swing.JFrame {
         accbot1.setBackground(java.awt.Color.white);
         accbot1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         accbot1.setForeground(new java.awt.Color(0, 0, 0));
-        accbot1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\correct.png")); // NOI18N
         accbot1.setText("DONE");
         accbot1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,8 +111,7 @@ public class signup extends javax.swing.JFrame {
         jButton1.setBackground(java.awt.Color.white);
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\speedometer.png")); // NOI18N
-        jButton1.setText("BACK TO DASHBOARD");
+        jButton1.setText("BACK TO LOG IN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -149,10 +146,13 @@ public class signup extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(accbot1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(25, 25, 25))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {accbot1, jButton1});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -203,46 +203,79 @@ public class signup extends javax.swing.JFrame {
     }//GEN-LAST:event_accnameActionPerformed
 
     private void accbot1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accbot1ActionPerformed
-       String name = accname.getText().trim();
+    
+          String name = accname.getText().trim();
     String email = accemail.getText().trim();
     String password = new String(accpass.getPassword()).trim();
 
-    // Step 1: Validate input
+
     if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please fill it up!", "Warning", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    // Step 2: Check for duplicate email (optional but helpful)
+
+    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
+        JOptionPane.showMessageDialog(this,
+            "Invalid email format.\n\n" +
+            "Your email must:\n" +
+            "- Look like jaber@gaymail.com\n" +
+            "- Be at least 8 characters long",
+            "Invalid Email", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    if (email.length() < 8 || password.length() < 8) {
+        JOptionPane.showMessageDialog(this,
+            "Email and password must each be at least 8 characters long.",
+            "Length Requirement", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    if (!password.matches(".*[A-Z].*")) {
+        JOptionPane.showMessageDialog(this,
+            "Password must contain at least one **uppercase letter** (A-Z).",
+            "Weak Password", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    if (!password.matches(".*\\d.*")) {
+        JOptionPane.showMessageDialog(this,
+            "Password must contain at least one **number** (0-9).",
+            "Weak Password", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
     if (UserFileManager.isValidLogin(name, email, password)) {
-        JOptionPane.showMessageDialog(this, "This account already exists.", "Warning", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+            "This account already exists.\nTry logging in instead.",
+            "Account Exists", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    // Step 3: Save user to file
-    UserFileManager.saveUser(name, email, password);
 
-    // Step 4: Clear fields
+    UserFileManager.saveUser(name, email, password);
+    JOptionPane.showMessageDialog(this, "Account created successfully!");
+
+
     accname.setText("");
     accemail.setText("");
     accpass.setText("");
-
-    JOptionPane.showMessageDialog(this, "Account created successfully!");
-
-    // Step 5: Navigate back to login
-    MainFrame main = new MainFrame();
-    main.setVisible(true);
+    new MainFrame().setVisible(true);
     dispose();
-        
       
     }//GEN-LAST:event_accbot1ActionPerformed
 
     private void showpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showpassActionPerformed
         if (showpass.isSelected()) {
-            // Show password as plain text
+
             accpass.setEchoChar((char) 0);
         } else {
-            // Mask the password again
+ 
             accpass.setEchoChar('•'); // or '*'
         }
     }//GEN-LAST:event_showpassActionPerformed

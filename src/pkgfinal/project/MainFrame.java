@@ -115,15 +115,15 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(tfname, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showpass, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(179, Short.MAX_VALUE))))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pass)
-                .addContainerGap())
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(showpass, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 173, Short.MAX_VALUE))
+                            .addComponent(pass))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +171,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Jokerman", 0, 36)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanco\\OneDrive\\Documents\\warehouse (4).png")); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -195,7 +194,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(56, 56, 56)
                 .addComponent(jLabel7)
@@ -260,7 +259,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(113, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -278,7 +277,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -308,25 +307,40 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_showpassActionPerformed
 
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
-       String name = tfname.getText().trim();
+      String name = tfname.getText().trim();
     String email = tfemail.getText().trim();
     String password = new String(pass.getPassword()).trim();
 
-    // Step 1: Check for empty fields
     if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill all fields before logging in.");
         return;
     }
 
-    String hashedInput = hashPassword(password);
-    boolean found = false;
 
-    // Step 2: Check users.txt for matching credentials
+    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    if (email.length() < 8 || password.length() < 8) {
+        JOptionPane.showMessageDialog(this, "Email and password must be at least 8 characters long.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    if (!password.matches(".*[A-Z].*") || !password.matches(".*\\d.*")) {
+        JOptionPane.showMessageDialog(this, "Password must contain at least one uppercase letter and one number.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+
+    boolean found = false;
     try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
         String line;
         while ((line = br.readLine()) != null) {
-            String[] parts = line.split("\\|");
-            if (parts.length == 3 && parts[0].equals(name) && parts[1].equals(email) && parts[2].equals(hashedInput)) {
+            String[] parts = line.split(",");
+            if (parts.length == 3 && parts[0].equals(name) && parts[1].equals(email) && parts[2].equals(password)) {
                 found = true;
                 break;
             }
@@ -337,22 +351,16 @@ public class MainFrame extends javax.swing.JFrame {
         return;
     }
 
-    // Step 3: React to login status
     if (found) {
         JOptionPane.showMessageDialog(this, "Log in successful!");
-
-        // Optionally clear fields
         tfname.setText("");
         tfemail.setText("");
         pass.setText("");
-
-        // Switch to Dashboard frame
-        Dashboard dash = new Dashboard(name, email,password); // Pass what you need
+        Dashboard dash = new Dashboard(name, email, password);
         dash.setVisible(true);
         dispose();
-
     } else {
-        JOptionPane.showMessageDialog(this, "Invalid credentials. Please create an account first.");
+        JOptionPane.showMessageDialog(this, "Invalid credentials. Please try again or sign up.");
     }
     }//GEN-LAST:event_login1ActionPerformed
     
