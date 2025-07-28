@@ -139,7 +139,7 @@ public void loadProductsToTable() {
         });
 
         ViewOrderButton.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        ViewOrderButton.setText("VIEW ORDER");
+        ViewOrderButton.setText("VIEW ORDER HISTORY");
         ViewOrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ViewOrderButtonActionPerformed(evt);
@@ -301,6 +301,7 @@ public void loadProductsToTable() {
 
     private void OrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrderButtonActionPerformed
         new OrderFrame().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_OrderButtonActionPerformed
 
     private void ViewOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewOrderButtonActionPerformed

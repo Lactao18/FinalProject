@@ -4,20 +4,29 @@
  */
 package pkgfinal.project;
 
-import java.util.Locale;
-import javax.management.modelmbean.ModelMBean;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.*;
+import javax.swing.table.*;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+
 
 /**
  *
  * @author Rainier
  */
 public class OrderFrame extends javax.swing.JFrame {
-    
-    /**
-     * Creates new form Order
-     */
+    private HashMap<String, ArrayList<String>> orderHistoryMap = new HashMap<>();
     public OrderFrame() {
         initComponents();
     }
@@ -37,6 +46,15 @@ public class OrderFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ProductSelectionTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        OrderListTextArea = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        CustomerNameOrderTF = new javax.swing.JTextPane();
+        jLabel5 = new javax.swing.JLabel();
+        BackToDashboardButton = new javax.swing.JButton();
+        ProceedToPayment = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -65,11 +83,11 @@ public class OrderFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Code", "Name", "Quantity", "Selection"
+                "Code", "Name", "Price", "Quantity", "Selection"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -80,52 +98,127 @@ public class OrderFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ProductSelectionTable);
         ProductSelectionTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (ProductSelectionTable.getColumnModel().getColumnCount() > 0) {
-            ProductSelectionTable.getColumnModel().getColumn(2).setResizable(false);
-            ProductSelectionTable.getColumnModel().getColumn(3).setResizable(false);
+            ProductSelectionTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Select Product");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Select Category");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Order List");
+
+        OrderListTextArea.setColumns(20);
+        OrderListTextArea.setRows(5);
+        jScrollPane2.setViewportView(OrderListTextArea);
+
+        jScrollPane4.setViewportView(CustomerNameOrderTF);
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Customer Name: ");
+
+        BackToDashboardButton.setBackground(new java.awt.Color(51, 51, 51));
+        BackToDashboardButton.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        BackToDashboardButton.setForeground(new java.awt.Color(255, 255, 255));
+        BackToDashboardButton.setText("Back to dashboard");
+        BackToDashboardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackToDashboardButtonActionPerformed(evt);
+            }
+        });
+
+        ProceedToPayment.setBackground(new java.awt.Color(51, 51, 51));
+        ProceedToPayment.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        ProceedToPayment.setForeground(new java.awt.Color(255, 255, 255));
+        ProceedToPayment.setText("Proceed to payment");
+        ProceedToPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProceedToPaymentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 455, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGap(141, 141, 141)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BackToDashboardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(24, 24, 24)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel5)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(30, 30, 30)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(120, 120, 120)
+                                    .addComponent(ProceedToPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BackToDashboardButton)))
                 .addGap(49, 49, 49)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(268, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ProceedToPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,57 +231,190 @@ public class OrderFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    class TableButtonRenderer extends JButton implements TableCellRenderer {
+    public TableButtonRenderer() {
+        setOpaque(true);
+    }
 
-    private void CategoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryComboBoxActionPerformed
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+        boolean isSelected, boolean hasFocus, int row, int column) {
+        setText("Order");
+        return this;
+    }
+}
+    class TableButtonEditor extends DefaultCellEditor {
+    protected JButton button;
+    private boolean clicked;
+    private JTable table;
+    private OrderFrame parent;
+    private int row;
 
-    }//GEN-LAST:event_CategoryComboBoxActionPerformed
+    public TableButtonEditor(JCheckBox checkBox, OrderFrame parentFrame) {
+        super(checkBox);
+        this.parent = parentFrame;
+        this.button = new JButton("Order");
+        this.button.setOpaque(true);
+        this.button.addActionListener(e -> fireEditingStopped());
+    }
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        loadCategoriesIntoComboBox();
-    }//GEN-LAST:event_formWindowOpened
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value,
+                                                 boolean isSelected, int row, int col) {
+        this.table = table;
+        this.row = row;
+        clicked = true;
+        return button;
+    }
 
-    private void loadCategoriesIntoComboBox() {
-        DefaultTableModel model = (DefaultTableModel) ProductSelectionTable.getModel();
-        if (ManageCategory.categoryList.isEmpty()) {
-           int result = JOptionPane.showConfirmDialog(
-               this,
-               "No categories found. Do you want to add categories now?",
-               "Category Required",
-               JOptionPane.OK_CANCEL_OPTION
-                );
+    @Override
+    public Object getCellEditorValue() {
+        if (clicked) {
+            processOrder(row);
+        }
+        clicked = false;
+        return "Order";
+    }
 
-           if (result == JOptionPane.OK_OPTION) {
-               new ManageCategory().setVisible(true);
-               this.dispose();
-           } else {
-               JOptionPane.showMessageDialog(this, "Category selection is required to continue.");
-           }
-        } else if (CategoryComboBox.getSelectedItem().equals("All products")){
-           for (Products p : Dashboard.productList) {
-                model.addRow(new Object[] {
-                p.getCode(),
-                p.getName(),
-                p.getPrice(),
-                p.getQuantity(),
-                p.getStatus(),
-                p.getCategory()
-        });
-           }
-        } else if (CategoryComboBox.getSelectedItem().equals(ManageCategory.categoryList)) {
-            
-            for (Products cat : Dashboard.productList) {
-                model.addRow(new Object[]{
-                cat.getCode(),
-                cat.getName(),
-                cat.getPrice(),
-                cat.getQuantity(),
-                cat.getStatus(),
-                cat.getCategory()});
-                
+    @Override
+    public boolean stopCellEditing() {
+        clicked = false;
+        return super.stopCellEditing();
+    }
+
+    private void processOrder(int rowIndex) {
+        if (rowIndex >= 0 && rowIndex < table.getRowCount()) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            String code = model.getValueAt(rowIndex, 0).toString();
+            String name = model.getValueAt(rowIndex, 1).toString();
+            double price = Double.parseDouble(model.getValueAt(rowIndex, 2).toString());
+
+            String input = JOptionPane.showInputDialog(parent, "Enter quantity for: " + name);
+            if (input == null || input.trim().isEmpty()) return;
+
+            int quantity;
+            try {
+                quantity = Integer.parseInt(input.trim());
+                if (quantity <= 0) throw new NumberFormatException();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(parent, "Please enter a valid positive number.", "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            double total = price * quantity;
+            String timestamp = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            String record = String.format("[%s] %s - %s: %.2f x %d = %.2f\n",
+                    timestamp, code, name, price, quantity, total);
+
+            parent.appendToOrderTextArea(record);
+            
         }
     }
+}
+
     
+
+    public void appendToOrderTextArea(String text) {
+        OrderListTextArea.append(text);
+    }
+    
+    private void CategoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryComboBoxActionPerformed
+        String selectedCategory = (String) CategoryComboBox.getSelectedItem();
+            if (selectedCategory != null) {
+                filterProductsByCategory(selectedCategory);
+            }
+    }//GEN-LAST:event_CategoryComboBoxActionPerformed
+  
+    
+    
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        loadCategoriesIntoComboBox();
+        
+        ProductSelectionTable.getColumnModel().getColumn(4).setCellRenderer(new TableButtonRenderer());
+        ProductSelectionTable.getColumnModel().getColumn(4).setCellEditor(new TableButtonEditor(new JCheckBox(), this));
+        loadOrderHistory(); 
+    }//GEN-LAST:event_formWindowOpened
+
+    private void loadOrderHistory() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("orders.txt"))) {
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+
+            if (content.length() == 0) {
+                OrderListTextArea.setText("No order history.");
+            } else {
+                OrderListTextArea.setText(content.toString());
+            }
+        } catch (IOException e) {
+            OrderListTextArea.setText("No order history.");
+        }
+    }
+    private void BackToDashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToDashboardButtonActionPerformed
+        new Dashboard().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BackToDashboardButtonActionPerformed
+
+    private void ProceedToPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProceedToPaymentActionPerformed
+        PaymentFrame.orderListText = OrderListTextArea.getText();
+        new PaymentFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ProceedToPaymentActionPerformed
+
+    private void loadCategoriesIntoComboBox() {
+        CategoryComboBox.removeAllItems();
+
+        if (ManageCategory.categoryList.isEmpty()) {
+            int result = JOptionPane.showConfirmDialog(
+                this,
+                "No categories found. Do you want to add categories now?",
+                "Category Required",
+                JOptionPane.OK_CANCEL_OPTION
+            );
+            if (result == JOptionPane.OK_OPTION) {
+                new ManageCategory().setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Category selection is required to continue.");
+            }
+            return;
+        }
+
+        CategoryComboBox.addItem("All products");
+        for (String category : ManageCategory.categoryList) {
+            CategoryComboBox.addItem(category);
+        }
+
+        filterProductsByCategory("All products");
+    }
+    
+    private void filterProductsByCategory(String category) {
+        DefaultTableModel model = (DefaultTableModel) ProductSelectionTable.getModel();
+        model.setRowCount(0);
+        boolean productFound = false;
+
+        for (Products p : Dashboard.productList) {
+            if (category.equals("All products") || p.getCategory().equals(category)) {
+                model.addRow(new Object[]{
+                    p.getCode(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getQuantity(),
+                    "Select"
+                });
+                productFound = true;
+            }
+        }
+
+        if (!productFound) {
+            JOptionPane.showMessageDialog(this, "No products found for selected category.", "No Products", JOptionPane.WARNING_MESSAGE);
+        }
+    }
     
     /**
      * @param args the command line arguments
@@ -226,11 +452,20 @@ public class OrderFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackToDashboardButton;
     private javax.swing.JComboBox<String> CategoryComboBox;
+    private javax.swing.JTextPane CustomerNameOrderTF;
+    private javax.swing.JTextArea OrderListTextArea;
+    private javax.swing.JButton ProceedToPayment;
     private javax.swing.JTable ProductSelectionTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 }
