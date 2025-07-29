@@ -4,6 +4,11 @@
  */
 package pkgfinal.project;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import pkgfinal.project.MainFrame;
 import pkgfinal.project.MainFrame;
@@ -21,6 +26,27 @@ public class signup extends javax.swing.JFrame {
     public signup() {
         initComponents();
     }
+    
+    
+    private boolean isExistingUser(String name, String email) {
+    try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 3 &&
+                parts[0].equals(name) &&
+                parts[1].equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error reading user file.");
+        e.printStackTrace();
+    }
+    return false;
+}
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,28 +230,26 @@ public class signup extends javax.swing.JFrame {
 
     private void accbot1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accbot1ActionPerformed
     
-          String name = accname.getText().trim();
+       
+    String name = accname.getText().trim();
     String email = accemail.getText().trim();
     String password = new String(accpass.getPassword()).trim();
 
-
+    // Basic empty check
     if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
+    // Email format check
     if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
         JOptionPane.showMessageDialog(this,
-            "Invalid email format.\n\n" +
-            "Your email must:\n" +
-            "- Look like jaber@gaymail.com\n" +
-            "- Be at least 8 characters long",
+            "Invalid email format.\n\nYour email must:\n- Look like jaber@email.com\n- Be at least 8 characters long",
             "Invalid Email", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
+    // Length check
     if (email.length() < 8 || password.length() < 8) {
         JOptionPane.showMessageDialog(this,
             "Email and password must each be at least 8 characters long.",
@@ -233,40 +257,48 @@ public class signup extends javax.swing.JFrame {
         return;
     }
 
-
+    // Password uppercase check
     if (!password.matches(".*[A-Z].*")) {
         JOptionPane.showMessageDialog(this,
-            "Password must contain at least one **uppercase letter** (A-Z).",
+            "Password must contain at least one uppercase letter (A-Z).",
             "Weak Password", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
+    // Password digit check
     if (!password.matches(".*\\d.*")) {
         JOptionPane.showMessageDialog(this,
-            "Password must contain at least one **number** (0-9).",
+            "Password must contain at least one number (0-9).",
             "Weak Password", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
-    if (UserFileManager.isValidLogin(name, email, password)) {
+    // Check if account already exists
+    if (isExistingUser(name, email)) {
         JOptionPane.showMessageDialog(this,
             "This account already exists.\nTry logging in instead.",
             "Account Exists", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
+    // Save new user
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("users.txt", true))) {
+        bw.write(name + "," + email + "," + password);
+        bw.newLine();
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error saving user.");
+        e.printStackTrace();
+        return;
+    }
 
-    UserFileManager.saveUser(name, email, password);
     JOptionPane.showMessageDialog(this, "Account created successfully!");
-
-
     accname.setText("");
     accemail.setText("");
     accpass.setText("");
+
+    // Redirect to login or dashboard (your choice)
     new MainFrame().setVisible(true);
-    dispose();
+    dispose(); // Close the Sign-Up frame
       
     }//GEN-LAST:event_accbot1ActionPerformed
 
@@ -334,4 +366,5 @@ public class signup extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBox showpass;
     // End of variables declaration//GEN-END:variables
+
 }

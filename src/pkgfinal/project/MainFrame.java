@@ -30,6 +30,28 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
     }
+    
+    private boolean isValidUser(String name, String email, String password) {
+    try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 3 &&
+                parts[0].equals(name) &&
+                parts[1].equalsIgnoreCase(email) &&
+                parts[2].equals(password)) {
+                return true;
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error reading user file.");
+        e.printStackTrace();
+    }
+    return false;
+}
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -307,7 +329,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_showpassActionPerformed
 
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
-      String name = tfname.getText().trim();
+     String name = tfname.getText().trim();
     String email = tfemail.getText().trim();
     String password = new String(pass.getPassword()).trim();
 
@@ -316,49 +338,31 @@ public class MainFrame extends javax.swing.JFrame {
         return;
     }
 
-
     if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
         JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
-
 
     if (email.length() < 8 || password.length() < 8) {
         JOptionPane.showMessageDialog(this, "Email and password must be at least 8 characters long.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
     if (!password.matches(".*[A-Z].*") || !password.matches(".*\\d.*")) {
         JOptionPane.showMessageDialog(this, "Password must contain at least one uppercase letter and one number.", "Warning", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-
-    boolean found = false;
-    try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length == 3 && parts[0].equals(name) && parts[1].equals(email) && parts[2].equals(password)) {
-                found = true;
-                break;
-            }
-        }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error reading user file.");
-        e.printStackTrace();
-        return;
-    }
-
-    if (found) {
+    if (isValidUser(name, email, password)) {
         JOptionPane.showMessageDialog(this, "Log in successful!");
         tfname.setText("");
         tfemail.setText("");
         pass.setText("");
+
+        // Open Dashboard
         Dashboard dash = new Dashboard(name, email, password);
         dash.setVisible(true);
-        dispose();
+        this.dispose(); // close the MainFrame
     } else {
         JOptionPane.showMessageDialog(this, "Invalid credentials. Please try again or sign up.");
     }
@@ -426,4 +430,5 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField tfemail;
     private javax.swing.JTextField tfname;
     // End of variables declaration//GEN-END:variables
+
 }
